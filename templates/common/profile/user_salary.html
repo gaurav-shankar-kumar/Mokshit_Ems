@@ -1,0 +1,131 @@
+{% load static %}
+
+
+<div class="tab-pane {% if tab == 'salary' %}active{% endif %}" id="salary">
+{% comment %} <div class="text-center lh-1 mb-2">
+    <h6 class="fw-bold">Payslip</h6> <span class="fw-normal">Payment slip for the month of June 2021</span>
+</div> {% endcomment %}
+{% comment %} <div class="d-flex justify-content-end"> <span>Working Branch:ROHINI</span> </div> {% endcomment %}
+    <table class=" table  table-condensed">
+        <tbody>
+            <tr>
+            <th style="text-align:right;border-top:none; ">Employee Code:</th>
+            <td style="text-align:left;border-top:none; ">{{selected_user.id|stringformat:"04d"}}</td>
+            <th style="text-align:right;border-top:none; ">Joining Date:</th>
+            <td style="text-align:left;border-top:none; ">{{selected_user.joining_date|date:"d M Y"}}</td>
+            <th style="text-align:right;border-top:none; ">Working Branch:</th>
+            <td style="text-align:left;border-top:none; ">Surat</td>
+            </tr>
+            <tr>
+            <th style="text-align:right;border-top:none; ">PF No.</th>
+            <td style="text-align:left;border-top:none; ">{% if salary.user.bank_details.all %}{{salary.user.bank_details.last.pf_no}}{% endif %}</td>
+            <th style="text-align:right;border-top:none; ">ESI No.</th>
+            <td style="text-align:left;border-top:none; "></td>
+            <th style="text-align:right;border-top:none; ">Designation:</th>
+            <td style="text-align:left;border-top:none; "></td>
+            </tr>
+            {% if salary.user.bank_details.all %}
+            <tr>
+            <th style="text-align:right;border-top:none; ">Ac No.</th>
+            <td style="text-align:left;border-top:none; ">{{salary.user.bank_details.last.ac_no}}</td>
+            <th style="text-align:right;border-top:none; ">Bank name:</th>
+            <td style="text-align:left;border-top:none; ">{{salary.user.bank_details.last.bank_name}}</td>
+            <th style="text-align:right;border-top:none; ">Ifsc Code.</th>
+            <td style="text-align:left;border-top:none; ">{{salary.user.bank_details.last.ifsc_no}}</td>
+            </tr>
+            {% endif %}
+            {% if salary.salary_data.salary_data %}
+            <tr>
+                <th style="text-align:right;border-top:none; ">CTC:</th>
+                <td style="text-align:left;border-top:none; " class="pr-0">{{salary.salary_data.yearly}}</td>
+                <td style="text-align:left;border-top:none; " class="pl-0" colspan="4">{{salary.salary_data.yearly_in_words}} only</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    {% if salary.salary_data.salary_data %}
+    <table class="mt-4 table table-bordered">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th class="bg-info pt-0 pb-0"  style="text-align:center; " colspan="4">Salary Breakdown of {{salary.current_date|date:"M Y"}}</th>
+                
+            </tr>
+            <tr>
+                <th  scope="col">Earnings</th>
+                <th class="bg-secondary" scope="col">Amount</th>
+                <th scope="col">Deductions</th>
+                <th class="bg-secondary" scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">Basic</th>
+                <td>{{salary.salary_data.basic}}</td>
+                <th>PF</th>
+                <td>0</td>
+            </tr>
+            <tr>
+                <th scope="row">HRA</th>
+                <td>{{salary.salary_data.hra}}</td>
+                <th>TDS</th>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th scope="row">Increament</th>
+                <td>{{salary.salary_data.increament}} </td>
+                <th>LOP</th>
+                <td>{{salary.salary_data.deduction}}</td>
+            </tr>
+            <tr class="border-top">
+                <td scope="row">Total Earning</td>
+                <th>{{salary.salary_data.total_earnings}}</th>
+                <td>Total Deductions</td>
+                <th>{{salary.salary_data.deduction}}</th>
+            </tr>
+            <tr >
+                <th  colspan="2" style="text-align:right;">Net Pay</th>
+                <th class="text-info" colspan="2" style="text-align:left;">{{salary.salary_data.total}}</th>
+                
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+    {% if salary.salary_data.payslip %}
+    <table class="mt-4 table table-bordered">
+        <thead class=" ">
+            <tr>
+                <th class="bg-warning pt-0 pb-0"  style="text-align:center; " colspan="7">Recent 12-moths of PaySlip Records</th>
+                
+            </tr>
+            <tr>
+                <th  scope="col">Date</th>
+                <th class="bg-" scope="col">Basic</th>
+                <th class="bg-" scope="col">hra</th>
+                <th class="bg-" scope="col">increament</th>
+                <th class="bg-" scope="col">deduction</th>
+                <th class="bg-" scope="col">total</th>
+                <th class="bg-" scope="col">remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payslip in salary.salary_data.payslip %}
+            <tr>
+                <td>{{payslip.month_year|date:"M Y"}}</td>
+                <td>{{payslip.basic}}</td>
+                <td>{{payslip.hra}}</td>
+                <td>{{payslip.increament}}</td>
+                <td>{{payslip.deduction}}</td>
+                <td>{{payslip.total}}</td>
+                <td>{{payslip.remarks}}</td>
+            </tr>
+            {% endfor %}
+           
+        </tbody>
+    </table>
+    {% endif %}
+    
+
+                  
+                  
+</div>

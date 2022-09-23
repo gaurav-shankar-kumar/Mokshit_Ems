@@ -1,0 +1,361 @@
+
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+{% block body %}
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      {% comment %} <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>ChartJS</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">ChartJS</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid --> {% endcomment %}
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- STACKED BAR CHART -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title float-left">Performance Graph</h3>
+                <form method="get">
+                <div class="float-right">
+                  {% if user.is_admin or user.superuser %}
+                  <select  name="selected_user_id" class="form-select p-1 bg-secondary">
+                    <option selected disabled value="">Select User</option>
+                    {% for select_user in all_users %}
+                    <option value="{{select_user.id}}" {% if selected_user == select_user %}selected{% endif %} >{{select_user.email}}</option>
+                    {% endfor %}
+                  </select>
+                  {% endif %}
+                  <input type="week" name="week" class="bg-secondary" value="{{current_date|date:'Y'}}-W{{current_date|date:'W'}}" >
+                  <input type="submit"  class="bg-info" >
+                </div>
+                
+              </form>
+
+
+
+                
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+
+            <div class="card-body">
+              <button type="button" style="pointer-events: none;" class="btn btn-info float-left">Weekly Worklog Data</button>
+              <button type="button" {% if selected_user != user %}disabled{% endif %} id="add_worklog_button" class="btn btn-warning float-right" data-toggle="modal" data-target="#modal-lg">
+                Add Worklog
+              </button>
+            </div>
+
+            <!-- /.card -->
+            <div class="card">
+              
+              
+             
+              <div style="overflow:scroll;" class="card-header">
+                
+                <div class="card-body">
+                  <table id="example2" style="margin-bottom:0px;overflow:hidden;" class=" table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th style="text-align:center; "> Weekly Days</th>
+                        {% for data in workflow %}
+                        {% if data.work_obj %}
+                        <th style="text-align:center; ">{{data.day}}</th>
+                        {% endif %}
+                        {% endfor %}
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                      <tr>
+                        <td class="font-weight-bold" style="text-align:center;">Working Hours</td>
+                        {% for data in workflow %}
+                        {% if data.work_obj %}
+                        <td style="text-align:center; ">{{data.worklog.work_time}}</td>
+                        {% endif %}
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <td class="font-weight-bold" style="text-align:center;">Extra Working Hours</td>
+                        {% for data in workflow %}
+                        {% if data.work_obj %}
+                        <td style="text-align:center; ">{{data.worklog.extra_time}}</td>
+                        {% endif %}
+                        {% endfor %}
+                      </tr>
+                      {% comment %} <tr>
+                        <td class="font-weight-bold" style="text-align:center;">Task</td>
+                        {% for data in workflow %}
+                        {% if data.work_obj %}
+                        <td style="text-align:center; ">{{data.work_obj.task.title}}</td>
+                        {% endif %}
+                        {% endfor %}
+                      </tr> {% endcomment %}
+                    </tbody>
+                  </table>
+                </div>
+                <div class="card-body">
+                  <table id="example2" style="margin-bottom:0px;overflow:hidden;" class=" table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th style="text-align:center; ">Date</th>
+                        <th style="text-align:center; ">Employee Name</th>
+                        <th style="text-align:center; ">Project</th>
+                        <th style="text-align:center; ">Task</th>
+                        <th style="text-align:center; ">Start Time</th>
+                        <th style="text-align:center; ">End Time</th>
+                        <th style="text-align:center; ">Active Time</th>
+                        <th style="text-align:center; ">Description</th>
+                        
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for data in workflow %}
+                      {% if data.work_obj %}
+                      {% for work_obj in data.work_obj %}
+                      <tr>
+                        
+                        <td style="text-align:center;">{{data.day|date:'d/m/Y'}}</td>
+                        <td style="text-align:center;"><a href="{% url 'user_profile' work_obj.user.id %}?tab=profile" >{{work_obj.user.get_full_name}}</a></td>
+                        <td style="text-align:center;">{{work_obj.project.title}}</td>
+
+                        
+                        <td style="text-align:center;">{{work_obj.task.title}}</td>
+                        <td style="text-align:center; ">{{work_obj.work_start|date:'G:i'}}</td>
+                        <td style="text-align:center; ">{{work_obj.work_end|date:'G:i'}}</td>
+                        <td style="text-align:center; ">{{work_obj.active_time|date:'G:i'}}</td>
+                        <td style="text-align:center; ">{{work_obj.describe}}</td>
+                      </tr>
+                      {% endfor %}
+                      {% endif %}
+                      {% endfor %}
+
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+
+          </div>
+          <!-- /.col (RIGHT) -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+      <div class="modal fade" id="modal-lg">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add Worklog</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              
+              
+            </div>
+            {% if messages %}
+              <div class="" >
+                  {% for message in messages %}
+                  {% if message.tags == "error" %}
+                      <div id="tag" class="alert bg-danger alert-dismissible fade show" role="alert">
+                          <strong id="title" >{{message.tags|title}}!</strong> {{ message.message }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">×</span>
+                          </button>
+                      </div>
+                  {% endif %}
+
+                  {% if message.tags == "success" %}
+                      <div id="tag" class="alert bg-success alert-dismissible fade show" role="alert">
+                          <strong id="title" >{{message.tags|title}}!</strong> {{ message.message }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">×</span>
+                          </button>
+                      </div>
+                  {% endif %}
+                  {% if message.tags == "warning" %}
+                      <div id="tag" class="alert bg-warning alert-dismissible fade show" role="alert">
+                          <strong id="title" >{{message.tags|title}}!</strong> {{ message.message }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">×</span>
+                          </button>
+                      </div>
+                  {% endif %}
+                  {% if message.tags == "info" %}
+                      <div id="tag" class="alert bg-info alert-dismissible fade show" role="alert">
+                          <strong id="title" >{{message.tags|title}}!</strong> {{ message.message }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">×</span>
+                          </button>
+                      </div>
+                  {% endif %}
+                  {% endfor %}
+              </div>
+              {% endif %}
+            <form method="post" action=""> 
+
+              <div class="modal-body">
+                <div class="card-body" style="display: block;">
+                      {% csrf_token %}
+                      <div class="form-group">
+                      
+                      <label for="inputName">Project and Task</label>
+                      <select id="inputStatus" name="project_task" class="form-control custom-select" required >
+                          <option selected disabled value="">Select Project and Task</option>
+                          {% for project in projects %}
+                          <optgroup label="{{project.title}}">
+                            {% for task in project.task.all %}
+                            {% if task.user == selected_user and task.user_status == False and task.on_delete == False %}
+                            <option value="{{project.id}},{{task.id}}" {% if selected_task == task %}selected{% endif %} >{{task.title}}</option>
+                            {% endif %}
+                            {% endfor %}
+                          </optgroup>
+                        {% endfor %}
+                      </select>
+                      </div>
+                      {% comment %} <div class="form-group">
+                      <label for="inputDescription">Task</label>
+                      <select id="inputStatus" name="task" class="form-control custom-select">
+                          <option selected="" disabled="">Select one</option>
+                          {% for task in selected_project.task.all %}
+                          {% if task.user == selected_user and task.user_status == False and task.on_delete == False %}
+                          <option value="{{task.id}}" {% if selected_task_id == task.id %}selected{% endif %} >{{task.title}}</option>
+                          {% endif %}
+                          {% endfor %}
+                          
+                      </select>
+                      
+                      </div> {% endcomment %}
+                      
+                      <div class="form-group">
+                          <label for="inputClientCompany" >Work Start Time</label>
+                          <input type="datetime-local" name="start_work" value="{{selected_start_work}}"  class="form-control" required>
+                      </div>
+                      <div class="form-group">
+                      <label for="inputClientCompany">Work End Time</label>
+                      <input type="datetime-local" name="end_work" value="{{selected_end_work}}"  class="form-control" required>
+                      </div>
+                      <div class="form-group">
+                      <label for="inputDescription">Description</label>
+                      <textarea id="inputDescription" name="desc" class="form-control" rows="4" required>{{selected_desc}}</textarea>
+                      </div>
+                      <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" name="task_status" value="yes" type="checkbox" id="customCheckbox2" {% if selected_task_status %} checked{% endif %} >
+                        <label for="customCheckbox2" class="custom-control-label">Is Task Completed</label>
+                      </div>
+                </div>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <input hidden name="date" value="{{current_date|date:'d/m/Y'}}" type="date">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+                <input type="submit" value="Add new Worklog" class="btn btn-success ">
+              </div>
+            </form>
+
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+
+{% endblock body %}
+
+{% block script %}
+<!-- Page specific script -->
+<script>
+    $(function () {
+      /* ChartJS
+       * -------
+       * Here we will create a few charts using ChartJS
+       */
+      //---------------------
+      //- STACKED BAR CHART -
+      //---------------------
+      var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
+      var stackedBarChartData = {
+        /*labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],*/
+        labels  : [{% for data in workflow %} "{{data.day|date:'d/m/Y'}}", {% endfor %}],
+        datasets: [
+          {
+            label               : 'Work',
+            backgroundColor     : 'rgba(60,141,188,0.9)',
+            borderColor         : 'rgba(60,141,188,0.8)',
+            pointRadius          : false,
+            pointColor          : '#3b8bba',
+            pointStrokeColor    : 'rgba(60,141,188,1)',
+            pointHighlightFill  : '#fff',
+            pointHighlightStroke: 'rgba(60,141,188,1)',
+            data                : [{% for data in workflow %} "{{data.work_time}}", {% endfor %}]
+          },
+          {
+            label               : 'Over-time Work',
+            backgroundColor     : 'rgba(210, 214, 222, 1)',
+            borderColor         : 'rgba(210, 214, 222, 1)',
+            pointRadius         : false,
+            pointColor          : 'rgba(210, 214, 222, 1)',
+            pointStrokeColor    : '#c1c7d1',
+            pointHighlightFill  : '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data                : [{% for data in workflow %} "{{data.extra_time}}", {% endfor %}]
+          },
+        ]
+      }
+  
+      var stackedBarChartOptions = {
+        responsive              : true,
+        maintainAspectRatio     : false,
+        scales: {
+          xAxes: [{
+            stacked: true,
+          }],
+          yAxes: [{
+            stacked: true
+          }]
+        }
+      }
+  
+      new Chart(stackedBarChartCanvas, {
+        type: 'bar',
+        data: stackedBarChartData,
+        options: stackedBarChartOptions
+      })
+    })
+
+    {% if open_modal %}
+    document.getElementById("add_worklog_button").click();
+    {% endif %}
+</script>
+
+{% endblock script %}

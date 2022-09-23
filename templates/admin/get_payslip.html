@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payslip</title>
+    {% include 'common/body/head_css.html' %}
+    
+</head>
+<body>
+    <div class="m-4 p-4" id="pdf">
+        <div  class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <div><img height="90px" style="margin-left: auto; margin-right: auto;display: block;" src="{% static 'common/dist/img/mlogo.png' %}" /></div>
+
+                    <div class="text-center lh-1 m-2">
+                        <h6 class="fw-bold">Payment slip for the month of  {{payslip.month_year|date:'F Y'}}</h6> <span class="fw-normal"></span>
+                    </div>
+                    <div class="d-flex justify-content-end"> <span>Working Branch:Surat</span> </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div> <span class="fw-bolder">EMP Code</span> <small class="ms-3">{{payslip.user.id|stringformat:"04d"}}</small> </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div> <span class="fw-bolder">EMP Name</span> <small class="ms-3">{{payslip.user.get_full_name}}</small> </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div> <span class="fw-bolder">PF No.</span> <small class="ms-3">{{payslip.user.bank_details.last.pf_no}}</small> </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div> <span class="fw-bolder">Payslip no.</span> <small class="ms-3">{{payslip.id|stringformat:"04d"}}</small> </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div> <span class="fw-bolder">IFSC No.</span> <small class="ms-3">{{payslip.user.bank_details.last.ifsc_no}}</small> </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div> <span class="fw-bolder">Bank Name</span> <small class="ms-3">{{payslip.user.bank_details.last.bank_name}}</small> </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div> <span class="fw-bolder">Designation</span> <small class="ms-3">{{payslip.user.role}}</small> </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div> <span class="fw-bolder">Ac No.</span> <small class="ms-3">{{payslip.user.bank_details.last.ac_no}}</small> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="mt-4 table table-bordered">
+                            <thead class="bg-dark text-white">
+                                <tr>
+                                    <th scope="col">Earnings</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Deductions</th>
+                                    <th scope="col">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Basic</th>
+                                    <td>{{payslip.basic}}</td>
+                                    <td>PF</td>
+                                    <td>0.0</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">DA</th>
+                                    <td>0.00</td>
+                                    <td>ESI</td>
+                                    <td>0.00</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">HRA</th>
+                                    <td>{{payslip.hra}} </td>
+                                    <td>TDS</td>
+                                    <td>0.0</td>
+                                </tr>
+                                
+                                <tr>
+                                    <th scope="row">Increament</th>
+                                    <td>{{payslip.increament}} % </td>
+                                    <td>SPL. Deduction</td>
+                                    <td>{{payslip.deduction}}</td>
+                                </tr>
+                                
+                                <tr class="border-top">
+                                    <th scope="row">Total Earning</th>
+                                    <td>{{total}}</td>
+                                    <td>Total Deductions</td>
+                                    <td>{{payslip.deduction}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"> <br> <span class="fw-bold">Net Pay : {{payslip.total}}</span> </div>
+                        <div class="border col-md-8">
+                            <div class="d-flex flex-column"> <span>In Words</span> <span>{{net_total}} only</span> </div>
+                        </div>
+                    </div>
+
+                    {% comment %} <div class="d-flex justify-content-end">
+                        <div class="d-flex flex-column mt-2"> <span class="fw-bolder">For Kalyan Jewellers</span> <span class="mt-4">Authorised Signatory</span> </div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center"><button class="btn btn-warning" onclick="printDiv('pdf','Title')">Print</button></div>
+
+
+
+{% comment %} <button id="cmd" onclick="saveDiv('pdf','Title')">save div as pdf</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.es.js" integrity="sha512-VTufZOUx+Gc0N4JkluA0ZkVs2x4wfDI3p60gRWpHT761kMQ+hiNlYI+8MGXbLO48ymPKAeRa1wsEm3BIaxSEvw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> {% endcomment %}
+
+<script>
+
+    
+    var doc = new jsPDF();
+    $('#cmd').click(function () {
+        doc.fromHTML($('#pdf').html(), 15, 15, {
+            'width': 200,
+                'elementHandlers': specialElementHandlers
+        });
+        doc.save('sample-file.pdf');
+    });
+
+    
+   
+   function printDiv(divId,
+     title) {
+   
+     let mywindow = window.open('', 'PRINT', 'height=750,width=1000,top=100,left=150');
+   
+     mywindow.document.write(`<html><head><title>${title}</title>`);
+     mywindow.document.write('</head><body >');
+     mywindow.document.write(document.getElementById(divId).innerHTML);
+     mywindow.document.write('</body></html>');
+   
+     mywindow.document.close(); // necessary for IE >= 10
+     mywindow.focus(); // necessary for IE >= 10*/
+   
+     mywindow.print();
+     mywindow.close();
+   
+     return true;
+   }
+   var specialElementHandlers = {
+    '#editor': function (element, renderer) {
+        return true;
+    }
+};
+
+    
+   
+</script>
+    {% include 'common/body/body_scripts.html' %}
+</body>
+</html>

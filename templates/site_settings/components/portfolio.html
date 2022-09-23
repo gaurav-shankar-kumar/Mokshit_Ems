@@ -1,0 +1,87 @@
+{% load static %}
+
+<div class="card card-primary">
+  
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body">
+        <div class="form-group">
+            <label >Client Name</label>
+            <select class="form-control" name="project" required="">
+              <option selected="" value="" disabled="">Select a Project</option>
+              {% for project in projects %}
+              <option value="{{project.id}}" {% if project == portfolio.project %} selected {% endif %}>{{project.title}}</option>
+              {% endfor %}
+            </select>
+            <input type="hidden" name="id" value="{{portfolio.id}}">
+        </div>
+        <div class="form-group">
+            <label >Title</label>
+            <input type="text" name="title" value="{{portfolio.title}}" class="form-control" placeholder="Enter Title" required>
+        </div>
+        <div class="form-group">
+          <label >Image Title</label>
+          <input type="text" name="img_title" value="{{portfolio.img_title}}" class="form-control" placeholder="Enter Image Title" required>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">Upload Images</label>
+            <div class="custom-file">
+                <input type="file" name="image"  class="custom-file-input" id="exampleInputFile" {% if portfolio.image %}{% else %}required{% endif %}>
+                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+            </div>
+        </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">All Portfolio</h3>
+      <div class="card-tools">
+        <form id="myform">
+          <div class="input-group input-group-sm" style="width: 250px">
+            <label >Sort By Projects</label>
+            <select  name="select_project" id="select-form" class="form-control float-right ml-2" >
+              <option value="">All Projects</option>
+              {% for project in projects %}
+              <option value="{{project.id}}" {% if selected_project == project.id %}selected{% endif %}>{{project.title}}</option>
+              {% endfor %}
+            </select>
+          </div>
+      </form>
+      </div>
+
+      
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body p-0">
+      <table class="table ">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Title</th>
+            <th >Image Title</th>
+            <th >Image</th>
+            <th >Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for portfolio in portfolios %}
+          <tr>
+            <td>{{portfolio.project.title}}</td>
+            <td>{{portfolio.title}}</td>
+            <td>{{portfolio.img_title}}</td>
+            <td><img src="{{portfolio.image.url}}" style="width: 60px" class=" mr-2" alt="{{portfolio.img_title}}"></td>
+            <td><a href="{% url 'site_settings_portfolio_edit' portfolio.id %}" class="btn btn-warning">Edit</a> <a href="?delete={{portfolio.id}}" class="btn btn-danger">Delete</a><td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>

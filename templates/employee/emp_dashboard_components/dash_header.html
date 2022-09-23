@@ -1,0 +1,52 @@
+{% load static %}
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h3>{{all_task.count}}</h3>
+
+          <p>Total Tasks</p>
+        </div>
+        
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>{{task_complete_ratio|floatformat:1}}<sup style="font-size: 20px"> %</sup></h3>
+
+          <p>Complete Rate</p>
+        </div>
+        
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-warning">
+        <div class="inner">
+          <h3>{{pending_task.count}}</h3>
+
+          <p>Pending Task</p>
+        </div>
+        
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3>{{overdue_task.count}}</h3>
+
+          <p>Due Task</p>
+        </div>
+        
+      </div>
+    </div>
+    <!-- ./col -->
+  </div>

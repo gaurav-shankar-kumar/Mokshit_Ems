@@ -1,0 +1,31 @@
+{% load static %}
+
+<section id="testimonials" class="testimonials">
+    <div class="container" data-aos="zoom-in">
+      <h3 class="heading">What Our Clients Says...</h3><br>
+      <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="swiper-wrapper">
+          {% for client in clients %}
+          <div class="swiper-slide">
+            <div class="testimonial-item">
+              <img src="{{client.image.url}}" class="testimonial-img" alt="" />
+              <h3>{{client.name}}</h3>
+              <h4>{{client.title}}</h4>
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                {{client.quotes}}
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- End testimonial item -->
+
+          
+          <!-- End testimonial item -->
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>

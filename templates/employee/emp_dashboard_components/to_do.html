@@ -1,0 +1,34 @@
+{% load static %}
+
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="ion ion-clipboard mr-1"></i>
+        To Do List
+      </h3>
+
+      
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <ul class="todo-list" data-widget="todo-list">
+        {% for task in pending_task %}
+        <li>
+          <div class="align-left">
+            <!-- todo text -->
+            <span class="text">{{task.title}}</span>
+            <span class="text float-right font-italic">{{task.project.last.title}}<small class="badge  badge-secondary"><i class="far fa-user"></i> {% if selected_user == task.assign_by %}for-<span class="text-warning">{{task.user.first_name}}{% else %}by-<span class="text-warning">{{task.assign_by.first_name}}{% endif %}</span></small></span>
+            <!-- Emphasis label -->
+            <small class="badge {% if  task.due_date > today %}badge-info{% elif task.due_date == today %}badge-warning{% elif task.due_date < today %} badge-danger {% endif %} "><i class="far fa-clock"></i> {{task.due_date|date:'d-m-y'}}</small>
+          <!-- General tools such as edit or delete-->
+          </div>
+        </li>
+        {% endfor %}
+        
+      </ul>
+    </div>
+    <!-- /.card-body -->
+    
+  </div>
+
+  

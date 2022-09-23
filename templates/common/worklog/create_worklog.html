@@ -1,0 +1,111 @@
+
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+{% block body %}
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      {% comment %} <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>ChartJS</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">ChartJS</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid --> {% endcomment %}
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Add Worklog</h3>
+              </div>
+              <div class="card-body" style="display: block;">
+                <form method="post" action=""> 
+                    {% csrf_token %}
+                    <div class="form-group">
+                    
+                    <label for="inputName">Project</label>
+                    <select id="inputStatus" name="project" class="form-control custom-select" onchange="this.form.submit()">
+                        {% if project %}
+                        <option selected="" value="{{project.id}}">{{project.title}}</option>
+                        {% else %}
+
+                        <option selected="" disabled="">Select one</option>
+                        {% endif %}
+                        {% for project in projects %}
+                        <option value="{{project.id}}" >{{project.title}}</option>
+                        
+                        {% endfor %}
+                    </select>
+                    </div>
+                    <div class="form-group">
+                    <label for="inputDescription">Task</label>
+                    <select id="inputStatus" name="task" class="form-control custom-select">
+                        <option selected="" disabled="">Select one</option>
+                        {% for task in project.task.all %}
+                        {% if task.user == user %}
+                        <option value="{{task.id}}">{{task.title}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        
+                    </select>
+                    
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inputClientCompany" >Work Start Time</label>
+                        <input type="datetime-local" name="start_work"  class="form-control">
+                    </div>
+                    <div class="form-group">
+                    <label for="inputClientCompany">Work End Time</label>
+                    <input type="datetime-local" name="end_work"  class="form-control">
+                    </div>
+                    <div class="form-group">
+                    <label for="inputDescription">Description</label>
+                    <textarea id="inputDescription" name="desc" class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" name="task_status" value="yes" type="checkbox" id="customCheckbox2" >
+                      <label for="customCheckbox2" class="custom-control-label">Is Task Completed</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                          <input type="submit" value="Add new Worklog" class="btn btn-success float-right">
+                        </div>
+                      </div>
+                </form>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <div class="col-md-6">
+            
+        </div>
+        
+      </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+
+{% endblock body %}
+
+{% block script %}
+<!-- Page specific script -->
+
+
+{% endblock script %}

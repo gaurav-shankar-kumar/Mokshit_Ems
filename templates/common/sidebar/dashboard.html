@@ -1,0 +1,24 @@
+{% load static %}
+
+
+{% comment %} {% if user.is_admin %}
+<li class="nav-item ">
+  <a href="/admindashboard" class="nav-link">
+    <i class="nav-icon fas fa-tachometer-alt"></i>
+    <p style="color:#000000">
+      Dashboard
+    </p>
+  </a>
+</li>
+
+{% else %}
+<li class="nav-item">
+  <a href="{% url 'emp_panel' %}" class="nav-link">
+    <i class="nav-icon fas fa-tachometer-alt"></i>
+    <p>
+      Dashboard
+      <i class="right fas "></i>
+    </p>
+  </a>
+</li>
+{% endif %} {% endcomment %}

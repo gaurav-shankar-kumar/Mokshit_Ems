@@ -1,0 +1,161 @@
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+
+{% block body %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Projects</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Projects</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div>
+        <div class="card-header">
+        <a class="btn btn-success float-right" href="{% url 'project_create' %}">
+          <i class="fas fa-pencil-alt">
+          </i>
+          Create New Project
+        </a>
+      </div>
+    </div>
+
+      <!-- Default box -->
+      <div class="card">
+        {% comment %} <div class="card-header">
+          <h3 class="card-title">Projects</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div> {% endcomment %}
+        <div class="card-body p-0">
+          <table class="table table-striped projects">
+              <thead>
+                  <tr>
+                      
+                      <th >
+                          Project Name
+                      </th>
+                      <th>
+                        Client Name
+                    </th>
+                      <th >
+                          Team Members
+                      </th>
+                      <th>
+                          Task Progress
+                      </th>
+                      <th  class="text-center">
+                          Total Task
+                      </th>
+                      <th  class="text-center">
+                        Project Status
+                      </th>
+                      <th style="width:5%">
+                      </th>
+                      
+                  </tr>
+              </thead>
+              <tbody>
+                {% for data in datas %}
+                  <tr>
+                      
+                      <td>
+                          <a href="{% url 'project_details' data.project.id %}">
+                              {{data.project.title}}
+                          </a>
+                          <br/>
+                          <small>
+                              Start From {{data.project.project_start|date:'d M y'}}
+                          </small>
+                      </td>
+                      <td>
+                        <a>
+                            {{data.project.client}}
+                        </a>
+                        <br/>
+                          <small>
+                              Due Date {{data.project.project_end|date:'d M y'}}
+                          </small>
+                        
+                    </td>
+                      <td>
+                          <ul class="list-inline">
+                            {% for user in data.project.project_controll_by.all %}
+                              <li class="list-inline-item">
+                                  <img alt="Avatar" class="table-avatar" src="{{user.avatar.url}}">
+                              </li>
+                            {% endfor %}
+                              
+                          </ul>
+                      </td>
+                      <td class="project_progress">
+                          <div class="progress progress-sm">
+                              <div class="progress-bar bg-green" role="progressbar" aria-valuenow="{{data.task_complete_percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{data.task_complete_percent}}%">
+                              </div>
+                          </div>
+                          <small>
+                              {{data.task_complete_percent|floatformat:0}} % Complete
+                          </small>
+                      </td>
+                      <td class="project-state">
+                          <span class="badge badge-success">{{data.project.task.count}}</span>
+                      </td>
+                      <td class="project-state">
+                        {% if data.project.project_status %}
+                          <span class="badge badge-success">Success</span>
+                          {% else %}
+                          <span class="badge badge-warning">Progress</span>
+                          {% endif %}
+                      </td>
+                      <td class="project-actions text-right">
+                          <a class="btn btn-primary btn-sm" href="{% url 'project_details' data.project.id %}">
+                              {% comment %} <i class="fas fa-folder">
+                              </i> {% endcomment %}
+                              View
+                          </a>
+                          {% comment %} <a class="btn btn-info btn-sm" href="#">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                          </a>
+                          <a class="btn btn-danger btn-sm" href="#">
+                              <i class="fas fa-trash">
+                              </i>
+                              Delete
+                          </a> {% endcomment %}
+                      </td>
+                  </tr>
+                  {% endfor %}
+                  
+              </tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock body %}

@@ -1,0 +1,93 @@
+{% extends 'common/body/body.html' %} {% load static %} {% block body %}
+
+
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Site Settings</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card">
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr >
+                                <th {% if contact_tab %}class="text-warning"{% endif %} style="width: 10px">#</th>
+                                <th  ><a href="{% url 'site_settings' %}" {% if contact_tab %}class="text-warning"{% endif %}>Contacts & Services</a></th>
+                              </tr>
+                              <tr >
+                                <th style="width: 10px" {% if team_tab %}class="text-warning"{% endif %}>#</th>
+                                <th ><a href="{% url 'site_settings_team' %}" {% if team_tab %}class="text-warning"{% endif %}>Team</a></th>
+                              </tr>
+                              <tr >
+                                <th  style="width: 10px" {% if client_tab %}class="text-warning"{% endif %}>#</th>
+                                <th ><a href="{% url 'site_settings_clients' %}" {% if client_tab %}class="text-warning"{% endif %}>Clients</a></th>
+                              </tr>
+                              <tr >
+                                <th style="width: 10px" {% if portfolios_tab %}class="text-warning"{% endif %}>#</th>
+                                <th ><a href="{% url 'site_settings_portfolio' %}" {% if portfolios_tab %}class="text-warning"{% endif %}>Portfolio</a></th>
+                              </tr>
+                              <tr >
+                                <th style="width: 10px" {% if count %}class="text-warning"{% endif %}>#</th>
+                                <th ><a href="{% url 'site_settings_count' %}" {% if count %}class="text-warning"{% endif %}>Services Count</a></th>
+                              </tr>
+                              {% comment %} <tr >
+                                <th style="width: 10px" {% if contact %}class="text-warning"{% endif %}>#</th>
+                                <th ><a href="" {% if contact %}class="text-warning"{% endif %}>Contacts & Services</a></th>
+                              </tr> {% endcomment %}
+                            </thead>
+                          </table>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    {% if contact_tab %}
+                    {% include 'site_settings/components/contact_service.html' %}
+                    {% elif selects %}
+                    {% include 'site_settings/components/team.html' %}
+                    {% elif client_tab %}
+                    {% include 'site_settings/components/client.html' %}
+                    {% elif projects %}
+                    {% include 'site_settings/components/portfolio.html' %}
+                    {% elif count %}
+                    {% include 'site_settings/components/count.html' %}
+                    {% endif %}
+                    
+                </div>
+                
+            </div>
+  </section>
+</div>
+{% endblock body %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#select-form').on('change', function() {
+            $('#myform').submit();
+        });
+    });
+</script>
+{% endblock script %}

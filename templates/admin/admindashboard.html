@@ -1,0 +1,256 @@
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+
+{% block body %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Welcome Admin! <small class="text-primary">{{user.get_full_name}}</small></h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">{{user.email}}</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Info boxes -->
+      {% include 'admin/admin_dashboard_components/birthday.html' %}
+      {% include 'admin/admin_dashboard_components/nav_dash.html' %}
+      <!-- /.row -->
+
+      
+
+      <!-- Main row -->
+      <div class="row">
+        <!-- Left col -->
+        <div class="col-md-8">
+          <!-- MAP & BOX PANE -->
+          
+          <!-- /.card -->
+          <div class="row">
+            {% include 'admin/admin_dashboard_components/leave_request.html' %}
+            {% include 'admin/admin_dashboard_components/new_users.html' %}
+            {% include 'admin/admin_dashboard_components/salary_pending.html' %}
+
+
+            
+  
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+
+          <!-- TABLE: LATEST ORDERS -->
+          {% include 'admin/admin_dashboard_components/latest_projects.html' %}
+
+
+         {% include 'admin/admin_dashboard_components/events_calender.html' %}
+          <!-- /.card -->
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+
+        <div class="col-md-4">
+
+
+          {% comment %} <!-- Info Boxes Style 2 -->
+          <div class="info-box mb-3 bg-warning">
+            <span class="info-box-icon"><i class="fas fa-tag"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Inventory</span>
+              <span class="info-box-number">5,200</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+          <div class="info-box mb-3 bg-success">
+            <span class="info-box-icon"><i class="far fa-heart"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Mentions</span>
+              <span class="info-box-number">92,050</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+          <div class="info-box mb-3 bg-danger">
+            <span class="info-box-icon"><i class="fas fa-cloud-download-alt"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Downloads</span>
+              <span class="info-box-number">114,381</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+          <div class="info-box mb-3 bg-info">
+            <span class="info-box-icon"><i class="far fa-comment"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Direct Messages</span>
+              <span class="info-box-number">163,921</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box --> {% endcomment %}
+
+          {% comment %} <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Browser Usage</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="chart-responsive">
+                    <canvas id="pieChart" height="150"></canvas>
+                  </div>
+                  <!-- ./chart-responsive -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-4">
+                  <ul class="chart-legend clearfix">
+                    <li><i class="far fa-circle text-danger"></i> Chrome</li>
+                    <li><i class="far fa-circle text-success"></i> IE</li>
+                    <li><i class="far fa-circle text-warning"></i> FireFox</li>
+                    <li><i class="far fa-circle text-info"></i> Safari</li>
+                    <li><i class="far fa-circle text-primary"></i> Opera</li>
+                    <li><i class="far fa-circle text-secondary"></i> Navigator</li>
+                  </ul>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer bg-light p-0">
+              <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    United States of America
+                    <span class="float-right text-danger">
+                      <i class="fas fa-arrow-down text-sm"></i>
+                      12%</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    India
+                    <span class="float-right text-success">
+                      <i class="fas fa-arrow-up text-sm"></i> 4%
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    China
+                    <span class="float-right text-warning">
+                      <i class="fas fa-arrow-left text-sm"></i> 0%
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!-- /.footer -->
+          </div> {% endcomment %}
+          <!-- /.card -->
+
+          <!-- PRODUCT LIST -->
+          {% include 'admin/admin_dashboard_components/recent_birthdays.html' %}
+          {% include 'admin/admin_dashboard_components/upcoming_holiday.html' %}
+
+          {% include 'admin/admin_dashboard_components/recent_task.html' %}
+          
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div><!--/. container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+ 
+{% endblock body %}
+
+{% block script %}
+<!-- Page specific script -->
+<!-- jQuery -->
+<script src="{% static 'common/plugins/jquery/jquery.min.js' %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="{% static 'common/plugins/fullcalendar/main.js' %}"></script>
+
+<script>
+  $(function () {
+    var Calendar = FullCalendar.Calendar;
+    var calendarEl = document.getElementById('calendar');
+    // initialize the external events
+    // -----------------------------------------------------------------
+    var calendar = new Calendar(calendarEl, {
+      headerToolbar: {
+        left  : 'prev,next today',
+        center: 'title',
+        right : 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      themeSystem: 'standard',
+      //Random default events
+      events:[
+      {% for leave in all_leaves %}
+      {
+        title          : '{{leave.user.get_full_name}}',
+        start          : new Date("{{ leave.startdate.isoformat }}"),
+        end          : new Date("{{ leave.enddate.isoformat }}"),
+        backgroundColor: '#f56954', //red
+        borderColor    : '#f56954', //red
+        allDay         : true
+      },
+      
+      {% endfor %}
+      {% for holiday in upcoming_holiday %}
+      
+      {
+        title          : '{{holiday.holidayname}}',
+        start          : new Date("{{ holiday.holiday_date.isoformat }}"),
+        backgroundColor: '#ebc507', //yellow
+        borderColor    : '#ebc507', //yellow
+        allDay         : true
+      },
+      
+      {% endfor %}
+
+      ],
+      
+      
+      
+    });
+    calendar.render();
+    // $('#calendar').fullCalendar()
+  })
+</script>
+
+
+{% endblock script %}
+  
+

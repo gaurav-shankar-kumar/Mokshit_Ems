@@ -1,0 +1,99 @@
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+
+{% block body %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Tasks Tables</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">All Task</h3>
+
+              <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 150px">
+                  <input
+                    type="text"
+                    name="table_search"
+                    class="form-control float-right"
+                    placeholder="Search"
+                  />
+
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-default">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body table-responsive p-0">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Emp-Details</th>
+                    <th>Task Status By Emp</th>
+                    <th>Task Reported To</th>
+                    <th>Task Status</th>
+                    <th>Task Added</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for task in alltasks %}
+
+                  <tr>
+                    <td>{{task.id}}</td>
+                    <td>{{task.title}}</td>
+                    <td>{{task.description}}</td>
+                    <td>{{task.user.get_full_name}} | {{task.user.email}}</td>
+                    {% if task.completed %} 
+                    <td class="text-success">Completed</td>
+                    {% else %}
+                    <td class="text-danger">Incompleted</td> 
+                    {% endif %}
+                    <td>{{task.project_manager.get_full_name}} | {{task.project_manager.email}}</td>
+                    {% if task.projectmanager_status %} 
+                    <td class="text-success">Approved </td>
+                    {% else %} 
+                    <td class="text-danger">Not Approved</td> 
+                    {% endif %}
+
+                    <td>{{task.created_at|date:"d-M-y" }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock body %}

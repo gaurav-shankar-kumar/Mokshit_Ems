@@ -1,0 +1,71 @@
+{% load static %}
+
+<div class="card card-primary">
+    
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body">
+        <div class="form-group">
+            <label >Client Name</label>
+            <select class="form-control" name="user" required>
+              {% if a_team %}
+              <option selected value="{{a_team.user.id}}">{{a_team.user.get_full_name}}</option>
+              {% else %}
+              <option selected value=""  disabled>Select a User</option>
+              {% endif %}
+              {% for select in selects %}
+              <option value="{{select.id}}">{{select.get_full_name}}</option>
+              {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label >Title</label>
+            <input type="text" name="title" value="{{a_team.title}}" class="form-control" placeholder="Enter User Title" required>
+        </div>
+        <div class="form-group">
+          <label >Rank</label>
+          <input type="number" name="sort" value="{{a_team.sort}}" class="form-control" placeholder="Enter no. For Showing Data in Series" required>
+      </div>
+        
+        
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">All Clients</h3>
+
+      
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body p-0">
+      <table class="table ">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Rank</th>
+            <th >Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for t in team %}
+          <tr>
+            <td><img src="{{t.user.avatar.url}}" style="width: 50px" class="img-circle mr-2" alt="{{t.user.first_name}}"> {{t.user.get_full_name}}</td>
+            <td>{{t.title}}</td>
+            <td>{{t.sort}}</td>
+            
+            <td><a href="{% url 'site_settings_team_edit' t.id %}" class="btn btn-warning">Edit</a> <a href="?delete={{t.id}}" class="btn btn-danger">Delete</a><td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>

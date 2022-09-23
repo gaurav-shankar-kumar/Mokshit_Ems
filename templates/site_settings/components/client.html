@@ -1,0 +1,66 @@
+{% load static %}
+
+<div class="card card-primary">
+    
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body">
+        <div class="form-group">
+            <label >Client Name</label>
+            <input type="text" name="name" value="{{client.name}}" class="form-control"  placeholder="Enter Client Name" required>
+            <input type="hidden" name="id" value="{{client.id}}">
+        </div>
+        <div class="form-group">
+            <label >Title</label>
+            <input type="text" name="title" value="{{client.title}}" class="form-control" placeholder="Enter Client Title" required>
+        </div>
+        <div class="form-group">
+            <label>Quotes</label>
+            <textarea class="form-control" name="quotes" placeholder="Enter Client Quotes" required>{{client.quotes}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">Upload Images</label>
+            <div class="custom-file">
+                <input type="file" name="image" class="custom-file-input" id="exampleInputFile">
+                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+            </div>
+        </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">All Clients</h3>
+
+      
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body p-0">
+      <table class="table ">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th >Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for c in clients %}
+          <tr>
+            <td><img src="{{c.image.url}}" style="width: 50px" class="img-circle mr-2" alt="{{c.name}}"> {{c.name}}</td>
+            <td>{{c.title}}</td>
+            
+            <td><a href="{% url 'site_settings_clients' c.id %}" class="btn btn-warning">Edit</a> <a href="?delete={{c.id}}" class="btn btn-danger">Delete</a><td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>

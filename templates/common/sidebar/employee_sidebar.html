@@ -1,0 +1,87 @@
+{% load static %}
+
+<li class="nav-item menu-is-opening menu-open">
+    <a href="#" class="nav-link">
+      <i class="nav-icon fas fa-sync-alt fa-spin"></i>
+      <p>
+        Employee
+        <i class="fas fa-angle-left right"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="{% url 'emp_panel' %}" class="nav-link">
+          <i class="nav-icon fas fa-tachometer-alt"></i>
+          <p>
+            Dashboard
+            <i class="right fas "></i>
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'profile' %}" class="nav-link">
+          <i class=" nav-icon far fa-user-circle"></i>
+          <p>Profile</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'task_board' %}" class="nav-link">
+          <i class="nav-icon fas fa-tasks"></i>
+          <p >Task Board</p>
+        </a>
+      </li>
+      <li class="nav-item ">
+        <a href="{% url 'worklog' %}" class="nav-link">
+            <i class="nav-icon fas fa-network-wired"></i>
+            <p>
+              Worklog
+            </p>
+        </a>
+      </li>
+      
+      {% comment %} <li class="nav-item">
+        <a href="" class="nav-link">
+          <i class="nav-icon fas fa-book"></i>
+          <p>
+            Task
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{% url 'project' %}" class="nav-link">
+              <i class="nav-icon fas fa-file"></i>
+              <p>Task Assigned</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Task Status</p>
+            </a>
+          </li>
+        </ul>
+      </li> {% endcomment %}
+      
+        <li class="nav-item">
+          <a href="{% url 'leave_view' %}" class="nav-link">
+            <i class="nav-icon fas fa-skating"></i>
+            <p>Leave </p>
+          </a>
+        </li>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'all_holiday' %}" class="nav-link">
+          <i class="nav-icon far fa-calendar-alt"></i>
+          <p>Holiday</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'payslip' %}" class="nav-link">
+          <i class="nav-icon fas fa-money-check-alt"></i>
+          <p>Payslip</p>
+        </a>
+      </li>
+      
+    </ul>
+  </li>

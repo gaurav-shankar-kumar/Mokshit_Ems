@@ -1,0 +1,125 @@
+{% load static %}
+
+  <li class="nav-item menu-open">
+    <a href="#" class="nav-link ">
+      <i class="nav-icon fa fa-fan fa-spin"></i>
+      <p >
+        Admin
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item ">
+            <a href="{% url 'admin_dashboard' %}" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p >
+                Dashboard
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'profile' %}" class="nav-link">
+            <i class=" nav-icon far fa-user-circle"></i>
+            <p>Profile</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="" class="nav-link">
+            <i class="nav-icon fas fa-user-cog "></i>
+            <p >
+            Employee Management
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'new_employee' %}" class="nav-link">
+                <i class="fas fa-user-edit"></i>
+                <p >Add New Employee</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'all_users' %}" class="nav-link">
+                <i class="fas fa-users"></i>
+                <p >All Employees</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'task_board' %}" class="nav-link">
+            <i class="nav-icon fas fa-tasks"></i>
+            <p >Task Board</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'all_projects' %}" class="nav-link">
+            <i class="nav-icon far fa-folder-open"></i>
+            <p >Project Management</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'salary_management' %}" class="nav-link">
+            <i class="nav-icon fas fa-money-check-alt"></i>
+            <p >Salary Management</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'all_leaves' %}" class="nav-link">
+            <i class="nav-icon fas fa-skating"></i>
+            <p >Leave Managment</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'all_holiday' %}" class="nav-link">
+            <i class="nav-icon far fa-calendar-alt"></i>
+            <p >Holiday Management</p>
+          </a>
+        </li>
+        
+        <li class="nav-item ">
+          <a href="{% url 'worklog' %}" class="nav-link">
+              <i class="nav-icon fas fa-network-wired"></i>
+              <p>
+                Workflow
+              </p>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a href="{% url 'site_settings' %}" class="nav-link">
+              <i class="nav-icon fas fa-tools"></i>
+              <p>
+                Site Settings
+              </p>
+          </a>
+        </li>
+        {% comment %} <li class="nav-item">
+          <a href="" class="nav-link">
+            <i class="nav-icon fas fa-book"></i>
+            <p >
+            Holiday Management
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url  'add_holiday' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p >Add Holiday</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'all_holiday' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p >All Holidays</p>
+              </a>
+            </li>
+          </ul>
+        </li> {% endcomment %}
+      
+      
+    </ul>
+  </li>
+  
+  

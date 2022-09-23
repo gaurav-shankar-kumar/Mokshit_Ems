@@ -1,0 +1,385 @@
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+
+{% block body %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper kanban">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6">
+          <h1>Task Board</h1>
+        </div>
+        <div class="col-sm-6 d-none d-sm-block">
+          
+          <ol class="breadcrumb float-sm-right">
+            {% if add_task %}
+            <li class="breadcrumb-item"><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default">
+              <i class="fa fa-plus"></i> Assign Task
+              </button>
+            </li>
+            {% endif %}
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Task Board</li>
+            
+          </ol>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+  <section class="content-header pt-0 pb-0">
+    <div class="container-fluid">
+      <form  >
+        <div class="row filter-row">
+          <div class="col-sm-6 col-md-3">
+            <div class="form-focus form-group">
+              <select  name="project" class="form-control" style="width: 100%;" onchange="this.form.submit()" required>
+                <option value="" disabled selected>Select Project</option>
+                {% for project in all_projects %}
+                <option value="{{project.id}}" {% if selected_project == project %} selected {% endif %}>{{project.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <div class="form-focus form-group">
+              <select  name="project_leader" class="form-control" style="width: 100%;" onchange="this.form.submit()" required>
+                {% if selected_project %}
+                <option value disabled selected>Select Project Leader</option>
+                {% for project_controll_by in selected_project.project_controll_by.all %}
+                <option value="{{project_controll_by.id}}" {% if selected_leader == project_controll_by.id %}selected{% endif %}>{{project_controll_by.get_full_name}}</option>
+                {% endfor %}
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <div class="form-focus form-group">
+              <select  name="project_member" class="form-control" style="width: 100%;" onchange="this.form.submit()" required>
+                {% if selected_leader %}
+                <option value disabled selected>Select Project Member</option>
+                {% for project_member in selected_project.project_assign.all %}
+                <option value="{{project_member.id}}" {% if selected_member == project_member.id %}selected{% endif %}>{{project_member.get_full_name}}</option>
+                {% endfor %}
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-4 col-md-2">
+            <div class="d-grid">
+              <a href="#" class="btn btn-success w-100"> Search </a>
+            </div>
+          </div>
+          <div class="col-sm-1 col-md-1">
+            <div class="d-grid">
+              <a href="{% url 'task_board' %}" class="btn btn-secondary w-100"> Reset </a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+  
+
+  <section class="content">
+    <div class="container-fluid h-100" style="max-height: 92%;" >
+      {% comment %} <div class="card card-row card-secondary">
+        <div class="card-header">
+          <h3 class="card-title">
+            Select Project and User
+          </h3>
+          <div class="card-tools">
+            <a href="{% url 'task_board' %}" class="btn btn-tool">Reset</a>
+          </div>
+        </div>
+        <div class="card-body">
+          <form method="post" >
+            {% csrf_token %}
+            <div class="card card-info card-outline">
+            
+              <div class="card-header">
+                <h5 class="card-title">Select Project</h5>
+              </div>
+              <div class="card-body form-group">
+                  <select  name="project" class="form-control" style="width: 100%;" onchange="this.form.submit()" required>
+                    
+                    <option  selected>--Select Project--</option>
+                    {% for project in all_projects %}
+                    
+                    <option value="{{project.id}}" {% if selected_project == project %} selected {% endif %}>{{project.title}}</option>
+                    {% endfor %}
+                  </select>
+              </div>
+            </div>
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h5 class="card-title">Select Project Leader</h5>
+              </div>
+              <div class="card-body form-group">
+                <select  name="project_leader" class="form-control" style="width: 100%;" onchange="this.form.submit()" required>
+                  {% if selected_project %}
+                  <option value>--Select Project Leader--</option>
+                  {% for project_controll_by in selected_project.project_controll_by.all %}
+                  <option value="{{project_controll_by.id}}" {% if selected_leader == project_controll_by.id %}selected{% endif %}>{{project_controll_by.get_full_name}}</option>
+                  {% endfor %}
+                  {% endif %}
+
+                </select>
+              </div>
+              
+            </div>
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h5 class="card-title">Select Member</h5>
+                
+                
+              </div>
+              <div class="card-body form-group">
+                <select  name="project_member" class="form-control" style="width: 100%;" onchange="this.form.submit()" required>
+                  {% if selected_leader %}
+                  <option value>--Select Project Member--</option>
+                  {% for project_member in selected_project.project_assign.all %}
+                  <option value="{{project_member.id}}" {% if selected_member == project_member.id %}selected{% endif %}>{{project_member.get_full_name}}</option>
+                  {% endfor %}
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            {% if create_box %}
+            <div class="card card-light card-outline">
+              <div class="card-header">
+                <h5 class="card-title">Create Task</h5>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool">
+                    <i class="fas fa-pen"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="input_Names">Task Title</label>
+                  <input type="text" id="input_Names"  name="task_title"  class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="inputDescription">Task Description</label>
+                  <textarea id="inputDescription" name="task_desc"  class="form-control" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Due Date:</label>
+                    <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                        <input type="date" name="due_date"  class="form-control " />
+                    </div>
+                </div>
+                <input type="submit" value="Save" class="btn btn-success float-right">
+              </div>
+
+            </div>
+            {% else %}
+            <input type="submit" hidden>
+            {% endif %}
+          <form>
+        </div>
+      </div> {% endcomment %}
+      <div class="card card-row card-primary">
+        <div class="card-header">
+          <h3 class="card-title">
+            New Task
+          </h3>
+        </div>
+        <div class="card-body">
+          {% for task in tasks %}
+          {% if today.date == task.created_at.date and task.user_status == False %}
+
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h5 class="card-title">{{task.title}}</h5>
+              <div class="card-tools">
+                <a href="#" class="btn btn-tool">
+                  {{task.project.first.title}}
+                </a>
+                <a href="#" class="btn btn-tool btn-link">#{{task.id}}</a>
+                
+                <a href="?project={{selected_project.id}}&task_delete={{task.id}}" class="btn btn-tool">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">
+                {{task.description}}
+              </p>
+            </div>
+            <div class="card-body pt-0">
+              <span class="float-left ">by - <span class="text-info">{% if task.assign_by == user %}you{% else %}{{task.assign_by.get_full_name}}{% endif %}</span></span>
+              <span class="float-right">for - <span class="text-info">{% if task.user == user %}you{% else %}{{task.user.get_full_name}}{% endif %}</span></span>
+              
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+
+        </div>
+      </div>
+      <div class="card card-row card-default">
+        <div class="card-header bg-info">
+          <h3 class="card-title">
+            In Progress
+          </h3>
+        </div>
+        <div class="card-body">
+          {% for task in tasks %}
+          {% if today.date > task.created_at.date and today.date < task.due_date and task.user_status == False %}
+          <div class="card card-info card-outline">
+            <div class="card-header">
+              <h5 class="card-title">{{task.title}}</h5>
+              <div class="card-tools">
+                <a href="#" class="btn btn-tool">
+                  {{task.project.first.title}}
+                </a>
+                <a href="#" class="btn btn-tool btn-link">#{{task.id}}</a>
+                {% comment %} <a href="#" class="btn btn-tool">
+                  <i class="fas fa-pen"></i>
+                </a> {% endcomment %}
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">
+                {{task.description}}
+              </p>
+            </div>
+            <div class="card-body pt-0">
+              <span class="float-left ">by - <span class="text-info">{% if task.assign_by == user %}you{% else %}{{task.assign_by.get_full_name}}{% endif %}</span></span>
+              <span class="float-right">for - <span class="text-info">{% if task.user == user %}you{% else %}{{task.user.get_full_name}}{% endif %}</span></span>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="card card-row card-success">
+        <div class="card-header">
+          <h3 class="card-title">
+            Completed
+          </h3>
+        </div>
+        <div class="card-body">
+          {% for task in tasks %}
+          {% if task.user_status == True %}
+          <div class="card card-success card-outline">
+            <div class="card-header">
+              <h5 class="card-title">{{task.title}}</h5>
+              <div class="card-tools">
+                <a href="#" class="btn btn-tool">
+                  {{task.project.first.title}}
+                </a>
+                <a href="#" class="btn btn-tool btn-link">#{{task.id}}</a>
+                {% comment %} <a href="#" class="btn btn-tool">
+                  <i class="fas fa-pen"></i>
+                </a> {% endcomment %}
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">
+                {{task.description}}
+              </p>
+            </div>
+            <div class="card-body pt-0">
+              <span class="float-left ">by - <span class="text-info">{% if task.assign_by == user %}you{% else %}{{task.assign_by.get_full_name}}{% endif %}</span></span>
+              <span class="float-right">for - <span class="text-info">{% if task.user == user %}you{% else %}{{task.user.get_full_name}}{% endif %}</span></span>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="card card-row card-danger">
+        <div class="card-header">
+          <h3 class="card-title">
+            Backlog
+          </h3>
+        </div>
+        <div class="card-body">
+          {% for task in tasks %}
+          {% if today.date > task.created_at.date and today.date > task.due_date and task.user_status == False %}
+          <div class="card card-danger card-outline">
+            <div class="card-header">
+              <h5 class="card-title">{{task.title}}</h5>
+              <div class="card-tools">
+                <a href="#" class="btn btn-tool">
+                  {{task.project.first.title}}
+                </a>
+                <a href="#" class="btn btn-tool btn-link">#{{task.id}}</a>
+                
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">
+                {{task.description}}
+              </p>
+            </div>
+            <div class="card-body pt-0">
+              <span class="float-left ">by - <span class="text-info">{% if task.assign_by == user %}you{% else %}{{task.assign_by.get_full_name}}{% endif %}</span></span>
+              <span class="float-right">for - <span class="text-info">{% if task.user == user %}you{% else %}{{task.user.get_full_name}}{% endif %}</span></span>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modal-default">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Assign Task</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="form-group">
+                <select  name="project_and_assign_user" class="form-control" style="width: 100%;" required>
+                  <option disabled selected>Select Project and Assign to User</option>
+                  {% for project in all_projects %}
+                  <optgroup label="{{project.title}}">
+                    {% for task_assign in project.project_assign.all %}
+                     <option value="{{project.id}},{{task_assign.id}}" style="background-image:url({{task_assign.avatar.url}});">{{task_assign.get_full_name}}</option>
+                    {% endfor %}
+                  </optgroup>
+                  {% endfor %}
+                </select>
+              </div>
+                <div class="form-group">
+                  <label for="input_Names">Task Title</label>
+                  <input type="text" id="input_Names"  name="task_title"  class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="inputDescription">Task Description</label>
+                  <textarea id="inputDescription" name="task_desc"  class="form-control" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Due Date:</label>
+                    <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                        <input type="date" name="due_date"  class="form-control " />
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save" class="btn btn-success float-right">
+            </div>
+          </form>
+         
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+  </section>
+</div>
+
+
+{% endblock body %}

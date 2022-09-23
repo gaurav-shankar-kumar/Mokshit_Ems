@@ -1,0 +1,91 @@
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+
+{% block body %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Payslip</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title mr-4">Payslip of <span class="text-primary">{{selected_user.email}}</span></h3>
+              <div class="card-tools">
+                
+                <form>
+                <div class="input-group input-group-sm" style="width: 150px">
+                  <input type="month" value="{{current_date|date:'Y-m'}}" max="{{max_date|date:'Y-m'}}" class="form-control float-right" name="month">
+                  
+
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-default">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+            </div>
+            <div class="card-body p-0">
+              <table class="table table-striped projects">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Basic</th>
+                    <th>HRA</th>
+                    <th>Increament</th>
+                    <th>Deduction</th>
+                    <th>Total</th>
+                    <th>Remarks</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for payslip in all_payslip|dictsortreversed:"month_year" %}
+                  <tr>
+                    <td>{{payslip.month_year|date:'M-y'}}</td>
+                    <td>{{payslip.basic}}</td>
+                    <td>{{payslip.hra}}</td>
+                    <td>{{payslip.increament}}</td>
+                    <td>{{payslip.deduction}}</td>
+                    <td>{{payslip.total}}</td>
+                    <td>{{payslip.remarks}}</td>
+                    <td><a href="{% url 'pay_slip_details' payslip.user.id payslip.id %}"  target=”_blank” >View</a></td>
+                  </tr>
+                  {% endfor %}
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+</div>
+
+{% endblock body %}

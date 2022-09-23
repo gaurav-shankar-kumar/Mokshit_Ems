@@ -1,0 +1,160 @@
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+
+{% block body %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Salary Management</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title mr-4">All Employee Salary Details</h3>
+              <a href="" type="button" style="pointer-events: none" class="btn btn-primary pt-0 pb-0 ">
+                {{current_date|date:'M Y'}}
+              </a>
+              {% comment %} <div class="input-group-append ">
+                <a href="" type="button" class="btn btn-warning pt-0 pb-0 ">
+                  Somthing
+                </a>
+              </div> {% endcomment %}
+              {% comment %} <form action="">
+                <label for="bdaymonth">Select Month:</label>
+                <input type="month" id="bdaymonth" name="month">
+                <input type="submit">
+              </form> {% endcomment %}
+              
+              
+
+              <div class="card-tools">
+                
+                <form>
+                <div class="input-group input-group-sm" style="width: 350px">
+                  <input type="month" value="{{current_date|date:'Y-m'}}" max="{{max_date|date:'Y-m'}}" class="form-control float-right" name="month">
+                  <input
+                    type="text"
+                    name="search"
+                    value="{{search_query}}"
+                    class="form-control float-right"
+                    placeholder="Search"
+                  />
+
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-default">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+            </div>
+            <div class="card-body p-0">
+              <table class="table table-striped projects">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Role</th>
+                    {% comment %} <th>Join Date</th> {% endcomment %}
+                    <th>Working Days</th>
+                    <th>Leave</th>
+                    <th>Basic</th>
+                    <th>Hra</th>
+                    <th>Increament</th>
+                    <th>Deduction</th>
+                    <th>Total</th>
+                    <th>Appraisal By</th>
+                    <th>Remarks</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for data in datas %}
+                  {% if data.salary_data.payslip %}
+                  
+                  {% elif data.salary_data.salary_data %}
+                  <form method="post">
+                    {% csrf_token %}
+                  <tr>
+                    <td><a href="{% url 'user_profile' data.user.id %}?tab=salary"> <img alt="Avatar" class="table-avatar mr-2" src="{{data.user.avatar.url}}"> {{data.user.get_full_name}}</a></td>
+                    <td>{{data.user.role}}</td>
+                    {% comment %} <td>{{data.user.joining_date|date:"d-m-Y"}}</td> {% endcomment %}
+                    <td>{{data.work_data.working_days}}/{{data.work_data.total_working_day}}</td>
+                    <td>{{data.leave_data.leave_days}}</td>
+                    <td ><input style="width:75px;" name="basic" type="number" value="{{data.salary_data.basic}}"></td>
+                    <td ><input style="width:75px;" name="hra" type="number" value="{{data.salary_data.hra}}"></td>
+                    <td ><input style="width:75px;" name="increament" type="number" value="{{data.salary_data.increament}}"></td>
+                    <td ><input style="width:75px;" name="deduction" type="number" value="{{data.salary_data.deduction}}"></td>
+                    <td ><input style="width:75px;" type="number" name="total" value="{{data.salary_data.total}}"></td>
+                    <td>
+                        {% if data.salary_data.salary_data %}
+                        <a href="{% url 'user_profile' data.salary_data.salary_data.action_by.id %}?tab=salary"><img alt="Avatar" class="table-avatar mr-2" src="{{data.salary_data.salary_data.action_by.avatar.url}}"> {{data.salary_data.salary_data.action_by.get_full_name}}</a>
+                        {% endif %}
+                    </td>
+                    <td><input name="remarks" type="text" value="for the month of {{current_date|date:'M Y'}}"></td>
+                    <input hidden name="user-id" value="{{data.user.id}}" type="number">
+                    <input hidden name="salary_structure_id" value="{{data.salary_data.salary_data.id}}" type="number">
+                    <td><input type='submit' class="btn btn-warning" value="Genrate Pay-Slip"> </td>
+                  </tr>
+                  </form>
+                  {% endif %}
+                  {% endfor %}
+                  {% for data in datas %}
+                  {% if data.salary_data.payslip %}
+                  <tr>
+                    <td><a href="{% url 'user_profile' data.user.id %}?tab=salary"><img alt="Avatar" class="table-avatar mr-2" src="{{data.user.avatar.url}}"> {{data.user.get_full_name}}</a></td>
+                    <td>{{data.user.role}}</td>
+                    {% comment %} <td>{{data.user.joining_date|date:"d-m-Y"}}</td> {% endcomment %}
+                    <td>{{data.work_data.working_days}}/{{data.work_data.total_working_day}}</td>
+                    <td>{{data.leave_data.leave_days}}</td>
+                    <td >{{data.salary_data.payslip.basic}}</td>
+                    <td >{{data.salary_data.payslip.hra}}</td>
+                    <td >{{data.salary_data.payslip.increament}}</td>
+                    <td >{{data.salary_data.payslip.deduction}}</td>
+                    <td >{{data.salary_data.payslip.total}}</td>
+                    <td>
+                        {% if data.salary_data.salary_data %}
+                        <a href="{% url 'user_profile' data.salary_data.salary_data.action_by.id %}"><img alt="Avatar" class="table-avatar mr-2" src="{{data.salary_data.salary_data.action_by.avatar.url}}"> {{data.salary_data.salary_data.action_by.get_full_name}}</a>
+                        {% endif %}
+                    </td>
+                    <td>{{data.salary_data.payslip.remarks}}</td>
+                    <td><span class="btn btn-success" value="Generated">Generated</span></td>
+                  </tr>
+                  {% else %}
+                  
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+</div>
+
+{% endblock body %}

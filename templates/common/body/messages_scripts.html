@@ -1,0 +1,24 @@
+{% load static %}
+{% if messages %}
+
+{% for message in messages %}
+<script>
+    $(function() {
+      var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 10000
+      });
+      {
+        Toast.fire({
+          icon: '{{message.tags}}',
+          title: '{{ message.message }}'
+        })
+      }; 
+    });
+  </script>
+  {% endfor %}
+{% endif %}
+
+{% comment %} toastr.{{message.tags}}('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.') {% endcomment %}

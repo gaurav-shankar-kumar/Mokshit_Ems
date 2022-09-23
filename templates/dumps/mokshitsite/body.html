@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from quiety.themetags.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 30 Jun 2022 05:11:49 GMT -->
+<head>
+    <!--required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!--twitter og-->
+    <meta name="twitter:site" content="@themetags">
+    <meta name="twitter:creator" content="@themetags">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Quiety - Creative SAAS Technology & IT Solutions Bootstrap 5 HTML Template">
+    <meta name="twitter:description" content="Quiety creative Saas, software technology, Saas agency & business Bootstrap 5 Html template. It is best and famous software company and Saas website template.">
+    <meta name="twitter:image" content="#">
+
+    <!--facebook og-->
+    <meta property="og:url" content="#">
+    <meta name="twitter:title" content="Quiety - Creative SAAS Technology & IT Solutions Bootstrap 5 HTML Template">
+    <meta property="og:description" content="Quiety creative Saas, software technology, Saas agency & business Bootstrap 5 Html template. It is best and famous software company and Saas website template.">
+    <meta property="og:image" content="#">
+    <meta property="og:image:secure_url" content="#">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
+
+    <!--meta-->
+    <meta name="description" content="Quiety creative Saas, software technology, Saas agency & business Bootstrap 5 Html template. It is best and famous software company and Saas website template.">
+    <meta name="author" content="ThemeTags">
+
+    <!--favicon icon-->
+    <link rel="icon" href="{% static 'mokshitsite/assets/img/favicon.png' %}" type="image/png" sizes="16x16">
+
+    <!--title-->
+    {% block title %}
+    <title>Quiety - Software & IT Solutions HTML Template</title>
+    {% endblock title %}
+
+    <!--google fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+
+    <!--build:css-->
+    <link rel="stylesheet" href="{% static 'mokshitsite/assets/css/main.css' %}">
+    <!-- endbuild -->
+    {% comment %} "{% static 'polls/style.css' %}"> {% endcomment %}
+
+    <!--custom css start-->
+    <link rel="stylesheet" href="{% static 'mokshitsite/assets/css/custom.css' %}">
+    <!--custom css end-->
+    {% block css %}
+    {% endblock css %}
+
+</head>
+
+<body>
+
+    <!--preloader start-->
+    <div id="preloader">
+        <div class="preloader-wrap">
+            <img src="{% static 'mokshitsite/assets/img/favicon.png' %}" alt="logo" class="img-fluid preloader-icon" />
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+    <!--preloader end-->
+    <!--main content wrapper start-->
+    <div class="main-wrapper" style='background-color:#E8531E'>
+        
+
+        {% include 'mokshitsite/header.html' %}
+
+
+        {% block body %}
+        {% endblock body %}
+
+
+        {% include 'mokshitsite/footer.html' %}
+
+
+    </div>
+
+
+
+    <!--build:js-->
+    <script src="{% static 'mokshitsite/assets/js/vendors/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'mokshitsite/assets/js/vendors/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'mokshitsite/assets/js/vendors/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'mokshitsite/assets/js/vendors/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'mokshitsite/assets/js/vendors/parallax.min.js' %}"></script>
+    <script src="{% static 'mokshitsite/assets/js/vendors/aos.js' %}"></script>
+    <script src="{% static 'mokshitsite/assets/js/app.js' %}"></script>
+    <!--endbuild-->
+    {% block script %}
+    
+    {% endblock script %}
+
+</body>
+
+
+<!-- Mirrored from quiety.themetags.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 30 Jun 2022 05:11:57 GMT -->
+</html>

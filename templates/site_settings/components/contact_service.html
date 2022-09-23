@@ -1,0 +1,89 @@
+{% load static %}
+
+<div class="card card-primary">
+    
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form method="post">
+        {% csrf_token %}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" name="email" value="{{contact.email}}" id="exampleInputEmail1" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Address</label>
+                        <textarea type="text" class="form-control" style="height: 148px;"  id="exampleInputPassword1" name="address" placeholder="Write Address">{{contact.address}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">City</label>
+                        <input type="text" class="form-control" name="city" value="{{contact.city}}" id="exampleInputPassword1" placeholder="Enter City">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Zip Code</label>
+                        <input type="text"  name="zip" value="{{contact.zip}}" class="form-control" id="exampleInputPassword1" placeholder="Enter Area Pin Code">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Twitter Link</label>
+                        <input type="url" class="form-control" name="twitter_link" value="{{contact.twitter_link}}" id="exampleInputPassword1" placeholder="Enter Twitter Page link">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Instagram Link</label>
+                        <input type="url" class="form-control" name="insta_link" value="{{contact.insta_link}}" id="exampleInputPassword1" placeholder="Enter Instagram Page link">
+                    </div>
+                    
+                  <!-- /.form-group -->
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Phone No.</label>
+                        <input type="text" name="phone_no" value="{{contact.phone_no}}" class="form-control" id="exampleInputPassword1" placeholder="Enter Mobile no.">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Landmark</label>
+                        <textarea type="text" class="form-control"  id="exampleInputPassword1" name="landmark" placeholder="Write Landmark Area">{{contact.landmark}}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">State</label>
+                        <input type="text" name="state" value="{{contact.state}}" class="form-control" id="exampleInputPassword1" placeholder="Enter State">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Google Map Embed Link</label>
+                        <input type="url" class="form-control" name="embed_link" value="{{contact.embed_link}}" id="exampleInputPassword1" placeholder="Enter Google Maps Embed link">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Facebook Link</label>
+                        <input type="url" class="form-control" name="fb_link" value="{{contact.fb_link}}" id="exampleInputPassword1" placeholder="Enter Facebook Page link">
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Skype Link</label>
+                        <input type="url" class="form-control" name="skype_link" value="{{contact.skype_link}}" placeholder="Enter Skype Id link">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Linked Link</label>
+                        <input type="url" class="form-control" name="linkedin_link" value="{{contact.linkedin_link}}" id="exampleInputPassword1" placeholder="Enter Linked Page link">
+                    </div>
+                  
+                    <!-- /.form-group -->
+                </div>
+                <!-- /.col -->
+              </div>
+            
+            
+            
+            
+            
+        </div>
+        <!-- /.card-body -->
+
+        <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

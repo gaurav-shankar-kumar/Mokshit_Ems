@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {% include 'common/body/title.html' %}
+    
+
+    {% include 'common/body/head_css.html' %}
+    
+
+    {% block style %} {% endblock style %}
+    
+  </head>
+  <body class="hold-transition sidebar-mini">
+
+    {% include 'common/body/body_css.html' %}
+
+    {% block css %} {% endblock css %}
+
+    
+
+    <div class="wrapper">
+
+      {% include 'common/sidebar/sidebar.html'%} 
+      
+      {% include 'common/header/header.html' %}
+
+      {% comment %} {% include 'common/messages.html' %} {% endcomment %}
+      
+      
+      {% block body %} 
+      
+      
+      {% endblock body %}
+
+      {% include 'common/body/footer.html' %}
+      
+    </div>
+
+    {% include 'common/body/body_scripts.html' %}
+    {% include 'common/body/messages_scripts.html' %}
+
+    
+
+    {% block script %}
+    
+    {% endblock script %}
+    
+  
+  </body>
+</html>

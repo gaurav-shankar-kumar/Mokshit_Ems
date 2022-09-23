@@ -1,0 +1,190 @@
+{% extends 'common/body/body.html' %} {% load static %} 
+
+
+{% block style %}
+{% comment %} <!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{% static 'common/plugins/fontawesome-free/css/all.min.css' %}">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' %}">
+<!-- Tempusdominus Bootstrap 4 -->
+<link rel="stylesheet" href="{% static 'common/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+<!-- iCheck -->
+<link rel="stylesheet" href="{% static 'common/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+<!-- JQVMap -->
+<link rel="stylesheet" href="{% static 'common/plugins/jqvmap/jqvmap.min.css' %}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{% static 'common/dist/css/adminlte.min.css' %}">
+<!-- overlayScrollbars -->
+<link rel="stylesheet" href="{% static 'common/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+<!-- Daterange picker -->
+<link rel="stylesheet" href="{% static 'common/plugins/daterangepicker/daterangepicker.css' %}">
+<!-- summernote -->
+<link rel="stylesheet" href="{% static 'common/plugins/summernote/summernote-bs4.min.css' %}"> {% endcomment %}
+{% endblock style %}
+
+
+{% block body %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Dashboard</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{% url 'emp_panel' %}">Home</a></li>
+            <li class="breadcrumb-item active">{{selected_user.email}}</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Small boxes (Stat box) -->
+      {% include 'employee/emp_dashboard_components/birthday.html' %}
+      
+      {% include 'employee/emp_dashboard_components/dash_header.html' %}
+     
+      <!-- /.row -->
+      <!-- Main row -->
+      <div class="row">
+        <!-- Left col -->
+        <section class="col-lg-7 connectedSortable">
+
+          <!-- TO DO List -->
+          {% include 'employee/emp_dashboard_components/to_do.html' %}
+          {% include 'employee/emp_dashboard_components/latest_projects.html' %}
+
+            <!-- USERS LIST -->
+            <div class="row">
+              {% include 'employee/emp_dashboard_components/team_members.html' %}
+
+              {% include 'employee/emp_dashboard_components/leave_request.html' %}
+              
+              
+            </div>
+            <!--/.card -->
+          <!-- /.card -->
+        </section>
+        <!-- /.Left col -->
+        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+        <section class="col-lg-5 connectedSortable">
+          {% include 'admin/admin_dashboard_components/recent_birthdays.html' %}
+          {% include 'admin/admin_dashboard_components/upcoming_holiday.html' %}
+          {% include 'employee/emp_dashboard_components/new_users.html' %}
+          <!-- Calendar -->
+          {% include 'employee/emp_dashboard_components/calender.html' %}
+          <!-- /.card -->
+        </section>
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock body %}
+
+{% block script %}
+
+<!-- jQuery -->
+<script src="{% static 'common/plugins/jquery/jquery.min.js' %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="{% static 'common/plugins/fullcalendar/main.js' %}"></script>
+
+<script>
+  $(function () {
+    var Calendar = FullCalendar.Calendar;
+    var calendarEl = document.getElementById('calendar');
+    // initialize the external events
+    // -----------------------------------------------------------------
+    var calendar = new Calendar(calendarEl, {
+      headerToolbar: {
+        left  : 'prev,next today',
+        center: 'title',
+        right : 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      themeSystem: 'bootstrap',
+      //Random default events
+      events:[
+      {% for leave in all_leaves %}
+      {
+        title          : '{{leave.user.get_full_name}}',
+        start          : new Date("{{ leave.startdate.isoformat }}"),
+        end          : new Date("{{ leave.enddate.isoformat }}"),
+        backgroundColor: '#f56954', //red
+        borderColor    : '#f56954', //red
+        allDay         : true
+      },
+      
+      {% endfor %}
+      {% for holiday in upcoming_holiday %}
+      
+      {
+        title          : '{{holiday.holidayname}}',
+        start          : new Date("{{ holiday.holiday_date.isoformat }}"),
+        backgroundColor: '#ebc507', //yellow
+        borderColor    : '#ebc507', //yellow
+        allDay         : true
+      },
+      
+      {% endfor %}
+
+      ],
+      
+      
+      
+    });
+    calendar.render();
+    // $('#calendar').fullCalendar()
+  })
+</script>
+
+
+{% comment %} <!-- jQuery -->
+<script src="{% static 'common/plugins/jquery/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'common/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'common/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- ChartJS -->
+<script src="{% static 'common/plugins/chart.js/Chart.min.js' %}"></script>
+<!-- Sparkline -->
+<script src="{% static 'common/plugins/sparklines/sparkline.js' %}"></script>
+<!-- JQVMap -->
+<script src="{% static 'common/plugins/jqvmap/jquery.vmap.min.js' %}"></script>
+<script src="{% static 'common/plugins/jqvmap/maps/jquery.vmap.usa.js' %}"></script>
+<!-- jQuery Knob Chart -->
+<script src="{% static 'common/plugins/jquery-knob/jquery.knob.min.js' %}"></script>
+<!-- daterangepicker -->
+<script src="{% static 'common/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'common/plugins/daterangepicker/daterangepicker.js' %}"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="{% static 'common/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<!-- Summernote -->
+<script src="{% static 'common/plugins/summernote/summernote-bs4.min.js' %}"></script>
+<!-- overlayScrollbars -->
+<script src="{% static 'common/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js' %}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js' %}"></script> {% endcomment %}
+    
+{% endblock script %}

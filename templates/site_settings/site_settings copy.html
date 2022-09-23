@@ -1,0 +1,141 @@
+{% extends 'common/body/body.html' %} {% load static %} {% block body %}
+
+
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Site Settings</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="" >
+                        <div class="card card-widget widget-user">
+                            <div class="widget-user-header bg-info">
+                                <h3 class="widget-user-desc">Contacts & Services</h3>
+                            </div>
+                            <div class="widget-user-image">
+                                <img class="img-circle elevation-2" src="{% static 'common/dist/img/contacts.png' %}" alt="Contacts & Services">
+                            </div>
+                            <div class="widget-user-header">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="" >
+                        <div class="card card-widget widget-user">
+                            <div  class="widget-user-header bg-warning text-white">
+                                <h3 class="widget-user-desc text-white">Team</h3>
+                            </div>
+                            <div class="widget-user-image">
+                                <img class="img-circle elevation-2" src="{% static 'common/dist/img/team.png' %}" alt="User Avatar">
+                            </div>
+                            <div class="widget-user-header">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                <a href="" >
+                    <div class="card card-widget widget-user">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-danger">
+                        <h3 class="widget-user-desc">Clients</h3>
+                    </div>
+                    <div class="widget-user-image">
+                        <img class="img-circle elevation-2" src="{% static 'common/dist/img/client.png' %}" alt="User Avatar">
+                    
+                    </div>
+                    
+                    <div class="widget-user-header">
+                    </div>
+                    </div>
+                <!-- Widget: user widget style 1 -->
+                </a>
+                <!-- /.widget-user -->
+                </div>
+                
+                <div class="col-md-4">
+                <a href="" >
+                    <div class="card card-widget widget-user">
+                    <div style="background-color:powderblue;" class="widget-user-header text-white">
+                        <h3 class="widget-user-desc">Portfolio</h3>
+                    </div>
+                    <div class="widget-user-image">
+                        <img class="img-circle elevation-2" src="{% static 'common/dist/img/portfolio.png' %}" alt="User Avatar">
+                    </div>
+                    <div class="widget-user-header">
+                    </div>
+                    </div>
+                </a>
+                </div>
+
+                
+                
+                
+                {% comment %} <div class="col-md-4">
+                <a href="" >
+                    <div class="card card-widget widget-user">
+                    <div style="background-color:#0377fc;" class="widget-user-header">
+                        <h3 class="widget-user-desc text-white">Cash In</h3>
+                    </div>
+                    <div class="widget-user-image">
+                        <img class="img-circle elevation-2" src={% static "images/cas.webp" %} alt="User Avatar">
+                    </div>
+                    <div class="widget-user-header">
+                    </div>
+                    </div>
+                </a>
+                </div> {% endcomment %}
+
+                {% comment %} <div class="col-md-4">
+                <a href="" >
+                    <div class="card card-widget widget-user">
+                    <div style="background-color:#5f4b73" class="widget-user-header">
+                        <h3 class="widget-user-desc text-white">Cash Out</h3>
+                    </div>
+                    <div class="widget-user-image">
+                        <img class="img-circle elevation-2" src={% static "images/cashout.png" %} alt="User Avatar">
+                    </div>
+                    <div class="widget-user-header">
+                    </div>
+                    </div>
+                </a>
+                </div> {% endcomment %}
+
+                {% comment %} <div class="col-md-4">
+                <a href="" >
+                    <div class="card card-widget widget-user">
+                    <div style="background-color:#285242;" class="widget-user-header">
+                        <h3 class="widget-user-desc text-white">Cash Flow</h3>
+                    </div>
+                    <div  class="widget-user-image">
+                        <img style="background-color:#c7f0e8;" class="img-circle elevation-2" src={% static "images/cashflow.png" %} alt="User Avatar">
+                    </div>
+                    <div class="widget-user-header">
+                    </div>
+                    </div>
+                </a>
+                </div> {% endcomment %}
+            </div>
+  </section>
+</div>
+{% endblock body %}

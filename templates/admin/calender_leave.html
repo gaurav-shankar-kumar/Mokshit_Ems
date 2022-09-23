@@ -1,0 +1,234 @@
+{% extends 'common/body/body.html' %} {% load static %} {% block body %}
+
+  <div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Leave Calendar</h1>
+          </div>
+          <div class="col-sm-6">
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          
+          <!-- /.col -->
+          <div class="col-md-12">
+            <div class="card card-primary">
+              <div class="card-body p-0">
+                <!-- THE CALENDAR -->
+                <div id="calendar"></div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add a New Holiday</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+            <form method="post" action="{% url 'add_holiday' %}">
+              {% csrf_token %}
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputAddress">Holiday Name</label>
+                <input name="name" type="text" class="form-control" id="inputAddress" placeholder="Add Holiday"/>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label for="date">Date</label>
+                  <input type="date" name="h-date" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <div class="modal fade" id="exampleModal">
+        <div class="modal-dialog">
+          <div class="modal-content bg-info">
+            <div class="modal-header">
+              <h4 class="modal-title">Leave Info</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputAddress">Employee Name</label>
+                <input name="name"  type="text" class="form-control" id="employee_name" disabled placeholder="Add Holiday"/>
+              </div>
+              <div class="form-group">
+                <label for="inputAddress">Leave Type</label>
+                <input name="name"  type="text" class="form-control" id="leave_type" disabled placeholder="Add Holiday"/>
+              </div>
+              <div class="form-group">
+                <label for="inputAddress">Leave Description</label>
+                <textarea name="name"  type="text" class="form-control" id="leave_description" disabled placeholder="Add Holiday"></textarea >
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label for="date">Start Date</label>
+                  <input type="date" id="leave_start_date" name="h-date" disabled class="form-control" />
+                </div>
+                <div class="col">
+                  <label for="date">End Date</label>
+                  <input type="date" id="leave_end_date" name="h-date" disabled class="form-control" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputAddress">Leave Status</label>
+                <input name="name"  type="text" class="form-control" id="leave_status" disabled placeholder="Add Holiday">
+              </div>
+            </div>
+            <div  class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      
+    </section>
+  </div>
+  
+ 
+  
+<button type="button" class="btn btn-primary" id="eventmodel" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat" hidden>Update the Events</button>
+
+
+
+
+{% endblock body %}
+
+{% block script %}
+
+<!-- jQuery -->
+<script src="{% static 'common/plugins/jquery/jquery.min.js' %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="{% static 'common/plugins/fullcalendar/main.js' %}"></script>
+
+<script>
+  $(function () {
+    var Calendar = FullCalendar.Calendar;
+    var Draggable = FullCalendar.Draggable;
+    var calendarEl = document.getElementById('calendar');
+    // initialize the external events
+    // -----------------------------------------------------------------
+    var calendar = new Calendar(calendarEl, {
+      headerToolbar: {
+        left  : 'prev,next today',
+        center: 'title',
+        right : 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      themeSystem: 'bootstrap',
+      //Random default events
+      events:[
+      {% for leave in all_leaves %}
+      {% if today >= leave.startdate and leave.leave_status == 'accept' %}
+      {
+        id             :  '{{leave.leave_type}}',
+        overlap        : '{{leave.leave_status}}',
+        groupId    :  '{{leave.description}}',
+        title          : '{{leave.user.get_full_name}}',
+        start          : new Date("{{ leave.startdate.isoformat }}"),
+        end          : new Date("{{ leave.enddate.isoformat }}"),
+        backgroundColor: '#008000', //green
+        borderColor    : '#008000', //green
+        allDay         : true
+      },
+      {% elif today < leave.startdate and leave.leave_status == 'accept' %}
+      {
+        id             :  '{{leave.leave_type}}',
+        overlap        : '{{leave.leave_status}}',
+        groupId    :  '{{leave.description}}',
+        title          : '{{leave.user.get_full_name}}',
+        start          : new Date("{{ leave.startdate.isoformat }}"),
+        end          : new Date("{{ leave.enddate.isoformat }}"),
+        backgroundColor: '#f56954', //red
+        borderColor    : '#f56954', //red
+        allDay         : true
+      },
+      {% elif today <= leave.startdate and leave.leave_status == 'pending' %}
+      {
+        id             :  '{{leave.leave_type}}',
+        overlap        : '{{leave.leave_status}}',
+        groupId    :  '{{leave.description}}',
+        title          : '{{leave.user.get_full_name}}',
+        start          : new Date("{{ leave.startdate.isoformat }}"),
+        end          : new Date("{{ leave.enddate.isoformat }}"),
+        backgroundColor: '#ebc507', //yellow
+        borderColor    : '#ebc507', //yellow
+        allDay         : true
+      },
+      {% endif %}
+      {% endfor %}
+
+      
+
+      ],
+      
+      eventClick: function(info) {
+        var employee_name = info.event.title; 
+        var leave_start_date = info.event.start;
+        var leave_end_date = info.event.end;
+        var leave_type  = info.event.id;
+        var leave_discription = info.event.groupId;
+        var leave_status = info.event.overlap;
+        document.getElementById("eventmodel").click();
+        document.getElementById("leave_type").value = leave_type;
+        document.getElementById("employee_name").value = employee_name;
+        document.getElementById("leave_description").value = leave_discription;
+        let sy = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(leave_start_date);
+        let sm = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(leave_start_date);
+        let sd = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(leave_start_date);
+        document.getElementById("leave_start_date").value = (sy+'-'+sm+'-'+sd);
+        let ey = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(leave_end_date);
+        let em = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(leave_end_date);
+        let ed = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(leave_end_date);
+        document.getElementById("leave_end_date").value = (ey+'-'+em+'-'+ed);
+        {% comment %} document.getElementById("leave_status").value = leave_status; {% endcomment %}
+        if ( leave_status == 'accept') {
+          document.getElementById("leave_status").value = 'Accepted';
+        }
+        else if  ( leave_status == 'reject') {
+          document.getElementById("leave_status").value = leave_status;
+        } 
+        else {
+          document.getElementById("leave_status").value = 'Pending';
+        }
+
+      },
+      
+    });
+    calendar.render();
+    // $('#calendar').fullCalendar()
+  })
+</script>
+{% endblock %}

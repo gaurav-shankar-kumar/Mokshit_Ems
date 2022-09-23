@@ -1,0 +1,57 @@
+{% load static %}
+
+<!-- Main Sidebar Container -->
+<aside  style="background-color:brown" class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="/" class="brand-link">
+    <img
+      src="{% static 'common\dist\img\m.png' %}"
+      alt="Mokshit Logo"
+      class="brand-image  elevation-1"
+      style="opacity: 1"
+    />
+    <span class="brand-text font-weight-light">Mokshit Infotech</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img
+          src="{{user.avatar.url}}"
+          class="img-circle elevation-2"
+          alt="User Image"
+        />
+      </div>
+      <div class="info">
+        <a href="#" class="d-block">{{user.get_full_name}}</a>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" >
+        {% if user.is_superuser %}
+        {% include 'common/sidebar/admin_sidebar.html' %}
+
+        {% elif user.is_admin %}
+        {% include 'common/sidebar/admin_sidebar.html' %}
+        {% elif user.is_hr %}
+        {% include 'common/sidebar/hr_sidebar.html' %}
+
+        {% else %}
+        {% include 'common/sidebar/dashboard.html' %}
+        {% include 'common/sidebar/employee_sidebar.html' %}
+        
+        {% endif %}
+
+        
+        
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

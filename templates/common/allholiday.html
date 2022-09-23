@@ -1,0 +1,347 @@
+{% extends 'common/body/body.html' %} {% load static %} {% block body %}
+
+  <div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Calendar</h1>
+          </div>
+
+          <div class="col-sm-6">
+            
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          
+          <!-- /.col -->
+          <div class="col-md-7">
+            <div class="card card-primary">
+              <div class="card-body p-0">
+                <!-- THE CALENDAR -->
+                <div id="calendar"></div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <div class="col-md-5">
+            <div class=" mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-header">
+                    <h3 class="card-title">All Upcoming Holiday</h3>
+      
+                    {% if user.is_admin or user.is_superuser %}
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default">
+                        <i class="fas fa-pencil-alt">
+                        </i> New Holiday
+                      </button>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
+                      <thead>
+                        <tr>
+                          {% comment %} {% if user.is_admin or user.is_hr %}
+                          <th>Holiday-ID</th>
+                          {% endif %} {% endcomment %}
+                          <th>Holiday Name</th>
+                          <th>Holiday Date</th>
+                          {% if user.is_admin or user.is_hr %}
+                          <th>Holiday Added By</th>
+                          <th>Created At</th>
+                          {% endif %}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for data in all_holiday %}
+                        {% if today <= data.holiday_date %}
+                        <tr>
+                          {% comment %} {% if user.is_admin or user.is_hr %}
+                          <td>{{data.id}}</td>
+                          {% endif %} {% endcomment %}
+      
+                          <td>{{data.holidayname}}</td>
+                          <td>{{data.holiday_date|date:'d-M-Y'}}</td>
+      
+                          {% if user.is_admin or user.is_hr %}
+      
+                          <td class="user-panel ">
+                            <a href="{% url 'user_profile' user.id %}?tab=profile"><img alt="Avatar" class="img-circle elevation-2 mr-2" src="{{data.created_by.avatar.url}}">{{data.created_by.get_full_name}}</a>
+                          </td>
+                          <td>{{data.created_at|date:'d-M-Y'}}</td>
+      
+                          {% endif %}
+      
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+                
+              </div>
+              <!-- /.card -->
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-header">
+                    <h3 class="card-title">Recently Passed Holiday</h3>
+      
+                    
+                  </div>
+                  <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
+                      <thead>
+                        <tr>
+                          {% comment %} {% if user.is_admin or user.is_hr %}
+                          <th>Holiday-ID</th>
+                          {% endif %} {% endcomment %}
+                          <th>Holiday Name</th>
+                          <th>Holiday Date</th>
+                          {% if user.is_admin or user.is_hr %}
+                          <th>Holiday Added By</th>
+                          <th>Created At</th>
+                          {% endif %}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for data in all_holiday|dictsortreversed:"holiday_date" %}
+                        {% if today > data.holiday_date %}
+                        <tr>
+                          {% comment %} {% if user.is_admin or user.is_hr %}
+                          <td>{{data.id}}</td>
+                          {% endif %} {% endcomment %}
+      
+                          <td>{{data.holidayname}}</td>
+                          <td>{{data.holiday_date|date:'d-M-Y'}}</td>
+      
+                          {% if user.is_admin or user.is_hr %}
+      
+                          <td class="user-panel ">
+                            <a href="{% url 'user_profile' user.id %}?tab=profile"><img alt="Avatar" class="img-circle elevation-2 mr-2" src="{{data.created_by.avatar.url}}">{{data.created_by.get_full_name}}</a>
+                          </td>
+                          <td>{{data.created_at|date:'d-M-Y'}}</td>
+      
+                          {% endif %}
+      
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add a New Holiday</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+            <form method="post" action="{% url 'add_holiday' %}">
+              {% csrf_token %}
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputAddress">Holiday Name</label>
+                <input name="name" type="text" class="form-control" id="inputAddress" placeholder="Add Holiday"/>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label for="date">Date</label>
+                  <input type="date" name="h-date" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <div class="modal fade" id="exampleModal">
+        <div class="modal-dialog">
+          <div class="modal-content bg-info">
+            <div class="modal-header">
+              <h4 class="modal-title">Info Modal</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputAddress">Holiday Name</label>
+                <input name="name" id="eventmodaltitle" type="text" class="form-control" id="inputAddress" placeholder="Add Holiday"/>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label for="date">Date</label>
+                  <input type="date" id="eventdate" name="h-date" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-light">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      
+    </section>
+  </div>
+  
+ 
+  
+<button type="button" class="btn btn-primary" id="eventmodel" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat" hidden>Update the Events</button>
+<div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="#" id="modal-form" method="get">
+        <div class="modal-body">
+            <input type="hidden" name="eventmodalid" class="form-control" id="eventmodalid">
+              <label for="task-title" class="col-form-label">Task Title:</label>
+              <input type="text" name="eventmodaltitle" class="form-control" >
+
+            <div class="form-group">
+              <label for="description-text" class="col-form-label">Descriptions:</label>
+              <input type="text" name="eventdiscription" class="form-control" id="eventdiscription" >
+
+            </div>
+            <div class="form-group">
+              <label for="status" class="col-form-label">Task Status:</label>
+              
+              <input type="checkbox" name="taskstatus" class="form-check"   id="eventmodalcheck">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="modal-button" value="submit" onclick="this.form.submit()" >Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock body %}
+
+{% block script %}
+
+<!-- jQuery -->
+<script src="{% static 'common/plugins/jquery/jquery.min.js' %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="{% static 'common/plugins/fullcalendar/main.js' %}"></script>
+
+<script>
+  $(function () {
+    var Calendar = FullCalendar.Calendar;
+    var Draggable = FullCalendar.Draggable;
+    var calendarEl = document.getElementById('calendar');
+    // initialize the external events
+    // -----------------------------------------------------------------
+    var calendar = new Calendar(calendarEl, {
+      headerToolbar: {
+        left  : 'prev,next today',
+        center: 'title',
+        right : 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      themeSystem: 'bootstrap',
+      //Random default events
+      events:[
+      {% for holiday in all_holiday %}
+      {% if holiday.holiday_date >= today %}
+      {
+        id             :  '{{holiday.id}}',
+        overlap        : '{{holiday.is_deleted}}',
+        groupId    :  '{{holiday.created_by.get_full_name}}',
+        title          : '{{holiday.holidayname}}',
+        start          : new Date("{{ holiday.holiday_date.isoformat }}"),
+        backgroundColor: '#008000', //red
+        borderColor    : '#008000', //red
+        allDay         : true
+      },
+      {% else %}
+      {
+        id             :  '{{holiday.id}}',
+        overlap        : '{{holiday.is_deleted}}',
+        groupId    :  '{{holiday.created_by.get_full_name}}',
+        title          : '{{holiday.holidayname}}',
+        start          : new Date("{{ holiday.holiday_date.isoformat }}"),
+        backgroundColor: '#f56954', //red
+        borderColor    : '#f56954', //red
+        allDay         : true
+      },
+      {% endif %}
+      {% endfor %}
+
+      
+
+      ],
+      
+      eventClick: function(info) {
+        var eventTitle = info.event.title; 
+        var eventDate = info.event.start;
+        var eventid  = info.event.id;
+        var eventdescription = info.event.groupId;
+        var completed = info.event.overlap;
+        document.getElementById("eventmodel").click();
+        document.getElementById("eventmodalid").value = eventid;
+        document.getElementById("eventmodaltitle").value = eventTitle;
+        document.getElementById("eventdiscription").value = eventdescription;
+        let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(eventDate);
+        let mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(eventDate);
+        let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(eventDate);
+        document.getElementById("eventdate").value = (ye+'-'+mo+'-'+da);
+        if ( completed == 'True') {
+          document.getElementById("eventmodalcheck").checked = true;
+        }
+        else {
+          document.getElementById("eventmodalcheck").checked = false;
+        }
+
+      },
+      
+    });
+    calendar.render();
+    // $('#calendar').fullCalendar()
+  })
+</script>
+{% endblock %}

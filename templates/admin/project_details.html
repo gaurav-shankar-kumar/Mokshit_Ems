@@ -1,0 +1,214 @@
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+
+{% block body %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Project Detail</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Project Detail</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+      
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+            {% if user.is_admin or user.superuser%}
+            <div class="row">
+              <div class="col-12 col-sm-4">
+                <div class="info-box bg-light">
+                  <div class="info-box-content">
+                    <span class="info-box-text text-center text-muted">Estimated budget</span>
+                    <span class="info-box-number text-center text-muted mb-0">{{budget_obj.estimeted_budget}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="info-box bg-light">
+                  <div class="info-box-content">
+                    <span class="info-box-text text-center text-muted">Total amount spent</span>
+                    <span class="info-box-number text-center text-muted mb-0">{{budget_obj.total_amount}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="info-box bg-light">
+                  <div class="info-box-content">
+                    <span class="info-box-text text-center text-muted">Estimated project duration</span>
+                    <span class="info-box-number text-center text-muted mb-0">{{total_project_day}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="row">
+              <div class="col-12">
+                <h4>Recent Task Activity</h4>
+                <hr>
+                {% for task in budget_obj.project.task.all|dictsortreversed:"created_at" %}
+                  <div class="post ">
+                    <div class="user-block">
+                      <img class="img-circle img-bordered-sm" src="{{task.user.avatar.url}}" alt="user image">
+                      <span class="username">
+                        <a href="{% url 'user_profile' task.user.id %}?tab=profile">{{task.user.get_full_name}}.</a>
+                      </span>
+                      <span class="description">task assigned at {{task.created_at}}</span>
+                    </div>
+                    <div class="user-block float-right">
+                      <img class="img-circle img-bordered-sm  float-right" src="{{task.assign_by.avatar.url}}" alt="user image">
+
+                      <span class="username float-right mr-2">
+                      <div><a class="float-right"  href="{% url 'user_profile' task.assign_by.id %}?tab=profile">{{task.assign_by.get_full_name}}</a></div>
+                      <div><p class="description float-right ml-0 mb-0">task assign by</p></div>
+                      </span>
+                    </div>
+
+                    <!-- /.user-block -->
+                    <h5 class="text-dark" >Task title - {{task.title}}</h5>
+
+                    <p>
+                      Task Description - {{task.description}}
+                    </p>
+                    <table id="example2" style="margin-bottom:0px;overflow:hidden;" class=" table table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th style="text-align:center; ">Date</th>
+                          <th style="text-align:center; ">Active Time</th>
+                          <th style="text-align:center; ">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for data in work_obj|dictsortreversed:"work_start" %}
+                        {% if data.task == task %}
+                        <tr>
+                          <td style="text-align:center;">{{data.work_start|date:'d/m/Y'}}</td>
+                          <td style="text-align:center; ">{{data.active_time|date:'G:i'}}</td>
+                          <td style="text-align:center; ">{{data.describe}}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+  
+                      </tbody>
+                    </table>
+
+                    <p>
+                      {% if task.user_status %}
+                      <span class="badge badge-success">Completed</span>
+                      {% else %}
+                      <span class="badge badge-warning">Progress</span>
+                      {% endif %}
+                    </p>
+                  </div>
+                  {% endfor %}
+
+                  
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+            <h3 class="text-primary"><i class="fas fa-paint-brush"></i> {{budget_obj.project.title}}</h3>
+            <p class="text-muted">{{budget_obj.project.description}}</p>
+            
+            <br>
+            <div></div>
+            <div class="text-muted ">
+              <p class="text-sm">Client
+                <b class="d-block">{{budget_obj.project.client}}</b>
+              </p>
+              <p class="text-sm">Project Lead Member
+                {% for leader in budget_obj.project.project_controll_by.all %}
+                <a href="{% url 'user_profile' leader.id %}?tab=profile" ><b class="d-block">{{leader.get_full_name}}</b></a>
+                {% endfor %}
+              </p>
+              <p class="text-sm">Project Member
+                {% for member in budget_obj.project.project_assign.all %}
+                <a href="{% url 'user_profile' member.id %}?tab=profile" ><b class="d-block">{{member.get_full_name}}</b></a>
+                {% endfor %}
+              </p>
+            </div>
+            
+
+            <h5 class="mt-5 text-muted">Project files</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
+              </li>
+              <li>
+                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
+              </li>
+              <li>
+                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
+              </li>
+              <li>
+                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-image "></i> Logo.png</a>
+              </li>
+              <li>
+                <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
+              </li>
+            </ul>
+            <div class="text-center mt-5 mb-3">
+              {% if user.is_admin or user.is_superuser %}
+              <a href="#" class="btn btn-sm btn-primary">Add files</a>
+              <a href="{% url 'project_update' budget_obj.project.id %}" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt">
+              </i> Update Project</a>
+              {% endif %}
+              <a href="{% url 'assign_task' budget_obj.project.id %}" class="btn btn-sm btn-info">Task Board</a>
+              
+            </div>
+            <div class="mt-5 mb-3">
+              <div class="float-left">
+                <p class="text-sm ">Created by
+                  <a href="{% url 'user_profile' budget_obj.project.created_by.id %}?tab=profile" > <b class="d-block">{{budget_obj.project.created_by.get_full_name}}</b></a>
+                </p>
+                <p class="text-sm ">Created at
+                  <b class="d-block">{{budget_obj.project.created_at}}</b>
+                </p>
+                <p class="text-sm ">Start Date
+                  <b class="d-block">{{budget_obj.project.project_start}}</b>
+                </p>
+              </div>
+              
+              <div class="float-right">
+                <p class="text-sm ">Remaining Days
+                  <b class="d-block">{{project_remaining_day}}</b>
+                </p>
+                <p class="text-sm ">Last Updated at
+                  <b class="d-block">{{budget_obj.project.updated_at}}</b>
+                </p>
+                <p class="text-sm ">Due Date
+                  <b class="d-block">{{budget_obj.project.project_end}}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock body %}

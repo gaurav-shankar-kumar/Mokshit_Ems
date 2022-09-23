@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Business Benchmark Group | 404 </title>
+  <link rel="icon" href="{% static 'common/dist/img/cb-logo1.png' %}" type="image/icon type">
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'common/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href='{% static "common/dist/css/adminlte.min.css" %}'>
+</head>
+<body class="hold-transition sidebar-mini">
+
+    
+
+  <!-- Content Wrapper. Contains page content -->
+  <div  >
+    <!-- Content Header (Page header) -->
+    
+
+    <!-- Main content -->
+    <div >
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>500 </h1>
+              </div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                  <li class="breadcrumb-item active">500 </li>
+                </ol>
+              </div>
+            </div>
+          </div><!-- /.container-fluid -->
+        </section>
+    
+        <!-- Main content -->
+        <section style="margin-top: 10%;" class="content">
+            <div style="margin-left: 42%;width: 50%;" class="image">
+                <img width="300px" src='{% static "common\dist\img\mlogo.png" %}'  alt="User Image">
+              </div>
+          <div class="error-page">
+            <h2 class="headline text-danger">500</h2>
+    
+            <div class="error-content">
+              <h3><i class="fas fa-exclamation-triangle text-danger"></i> Oops! Something went wrong.</h3>
+    
+              <p>
+                We will work on fixing that right away.
+                Meanwhile, you may <a href="{% url 'index' %}">return to dashboard</a>.
+              </p>
+    
+              
+            </div>
+          </div>
+          <!-- /.error-page -->
+    
+        </section>
+        <!-- /.content -->
+      </div>
+  <!-- /.content-wrapper -->
+  <footer style="position:absolute;bottom:0;width:100%;margin-left:0;" class="main-footer">
+   
+    <strong><img style="height:20px" src='{% static "common/dist/img/cb-logo.png" %}'/> Copyright &copy; 2022.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0
+    </div>
+ </footer>
+
+
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src='{% static "commonplugins/jquery/jquery.min.js" %}'></script>
+<!-- Bootstrap 4 -->
+<script src='{% static "common/plugins/bootstrap/js/bootstrap.bundle.min.js" %}'></script>
+<!-- AdminLTE App -->
+<script src='{% static "commondist/js/adminlte.min.js" %}'></script>
+<!-- AdminLTE for demo purposes -->
+<script src='{% static "commondist/js/demo.js" %}'></script>
+</body>
+</html>

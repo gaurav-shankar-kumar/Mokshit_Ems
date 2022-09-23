@@ -1,0 +1,42 @@
+
+{% extends 'common/body/body.html' %} 
+{% load static %} 
+{% block body %}
+<div class="content-wrapper">
+  <form method="post" class="leaveform">
+    {% csrf_token %}
+
+    <h1>Apply For Leave Application</h1>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputState">Leave Type</label>
+        <select style="width:70rem" name="leave_type" id="inputState" class="form-control">
+           <option selected>Choose...</option>
+           <option >Sick</option>
+           <option >Casual</option>
+           <option >Emergency</option>
+           <option >Family Issue</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputAddress">Description</label>
+      <input name="description" type="text" class="form-control" id="inputAddress" placeholder="Reason for Leave" required />
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label for="start_date">Start-Date</label>
+        <input type="date" name="start_date" class="form-control" />
+      </div>
+      <div class="col">
+        <label for="end-date">End-Date</label>
+        <input type="date" name="end_date" class="form-control" />
+      </div>
+    </div>
+
+    <button style="margin-top:3rem" type="submit" class="btn btn-primary">Apply for Leave</button>
+  </form>
+</div>
+
+{% endblock body %}
